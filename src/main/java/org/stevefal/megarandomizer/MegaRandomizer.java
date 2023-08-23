@@ -28,6 +28,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+import org.stevefal.megarandomizer.gamerules.MegaGameRules;
+import org.stevefal.megarandomizer.networking.MegaMessages;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(MegaRandomizer.MODID)
@@ -58,6 +60,13 @@ public class MegaRandomizer {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
 
+        // Register network messages
+        MegaMessages.register();
+
+        // Register Mega GameRules
+        MegaGameRules.register();
+
+        // TODO: Register LootItemConditions!
     }
 
     // Add the example block item to the building blocks tab

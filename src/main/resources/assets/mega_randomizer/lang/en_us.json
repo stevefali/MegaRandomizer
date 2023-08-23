@@ -1,0 +1,9 @@
+{
+  "menu.megarandomoptions": "Mega Randomizer Options",
+  "menu.megarandomoptions.entity_drops_on": "Randomize Entity Drops: ON",
+  "menu.megarandomoptions.entity_drops_off": "Randomize Entity Drops: OFF",
+  "menu.megarandomoptions.block_drops_on": "Randomize Block Drops: ON",
+  "menu.megarandomoptions.block_drops_off": "Randomize Block Drops: OFF",
+  "menu.megarandomoptions.player_drops_on": "Randomize Player Drops: ON",
+  "menu.megarandomoptions.player_drops_off": "Randomize Player Drops: OFF"
+}
