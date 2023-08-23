@@ -28,6 +28,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
+import org.stevefal.megarandomizer.blocklot.MegaLootModifiers;
+import org.stevefal.megarandomizer.blocklot.condition.MegaLootItemConditions;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 
@@ -45,10 +47,11 @@ public class MegaRandomizer {
     public MegaRandomizer() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        // Register the block loot modifier
+        MegaLootModifiers.register(modEventBus);
+
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-
-
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -66,7 +69,8 @@ public class MegaRandomizer {
         // Register Mega GameRules
         MegaGameRules.register();
 
-        // TODO: Register LootItemConditions!
+        // Register LootItemConditions
+        MegaLootItemConditions.register();
     }
 
     // Add the example block item to the building blocks tab

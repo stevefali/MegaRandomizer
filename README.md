@@ -62,11 +62,16 @@ This meant I had to create my own LootItemCondition class, BlockDropSourceCondit
 
 #### BlockDropSourceCondition
 The available LootItemCondition classes all checked for conditions that were a bit too specific for my purposes,
-so I created BlockDropSourceCondition.java. The test() method of this class simply checks if the drops are coming from
+so I created BlockDropSourceCondition.java, which extends LootItemCondition. The test() method of this class simply checks if the drops are coming from
 a block.  
 However, the access of LootItemConditions.register() is private, so in order to register my LootItemCondition, I had to
-setup an access transformer for that method, which requires the SRG name for the method. I got the SRG mapping from
-the linkie.shedaniel.dev website.
+set up an access transformer for that method, which requires the SRG name for the method. I got the SRG mapping from
+the linkie.shedaniel.dev website.  
+
+#### Codec
+The codec supplied by BlockDropsModifier.java reads the random_drop_from_block.json file, which tells the Loot Modifier
+system to use the BlockDropSourceCondition. When BlockDropSourceCondition.test() returns true, the doApply() method
+in BlockDropsModifier.java is called, which is where I replace the vanilla loot with randomized loot.
 
 ### Entity Drop Randomization
 To randomize entity drops, it turned out to be a lot simpler to register a LivingDropsEvent listener, since the
