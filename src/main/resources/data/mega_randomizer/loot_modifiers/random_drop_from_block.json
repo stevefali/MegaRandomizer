@@ -1,0 +1,8 @@
+{
+  "type": "mega_randomizer:randomize_block_drops",
+  "conditions": [
+    {
+      "condition": "block_drop_source"
+    }
+  ]
+}
