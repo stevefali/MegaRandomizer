@@ -1,13 +1,9 @@
 # Mega Randomizer
-Minecraft Randomizer Mod
 
 Welcome to Mega Randomizer, the Minecraft randomizer that you can customize!
 
 This mod comes with custom game rules that allow you to individually turn on or off item drop randomization for
 Blocks, Entities or Players. (More to come in future versions!)
-
-The random drop rules can be changed from the in-game menu or through commands.
-
 
 # Basic Rundown of how my Code Works:
 
@@ -39,8 +35,6 @@ for setting the MegaGameRule values in the client.
 ### Dedicated Server
 When the mod is running in a dedicated server, the client can not modify the MegaGameRules, and neither the
 Mega Randomizer Options screen nor the button to open it show up.
-
-
 
 
 ## Drop Randomization
