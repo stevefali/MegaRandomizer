@@ -31,6 +31,7 @@ via a network packet, which also sends another packet back to the client contain
 side to keep both sides in sync.
 
 ### Network Packets
+
 There are three new network packets, which are registered in MegaMessages.java. One network packet is for requesting
 an update of MegaGameRule values from the server, one for setting the MegaGameRule values in the server, and one
 for setting the MegaGameRule values in the client.
@@ -38,6 +39,9 @@ for setting the MegaGameRule values in the client.
 ### Dedicated Server
 When the mod is running in a dedicated server, the client can not modify the MegaGameRules, and neither the
 Mega Randomizer Options screen nor the button to open it show up.
+
+
+
 
 ## Drop Randomization
 
@@ -86,4 +90,5 @@ list before it is shuffled.
 When items are dropped in the game, whether by blocks or entities, the getRandomizedItem() method of RandomDrops.java
 takes the vanilla drop item and gets its index from the master list, then returns whatever item is at that index of 
 the shuffled list.
+
 
