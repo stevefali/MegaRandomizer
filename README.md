@@ -32,6 +32,16 @@ side to keep both sides in sync.
 
 ### Network Packets
 
+There are three new network packets, which are registered in MegaMessages.java. One network packet is for requesting
+an update of MegaGameRule values from the server, one for setting the MegaGameRule values in the server, and one
+for setting the MegaGameRule values in the client.
+
+### Dedicated Server
+When the mod is running in a dedicated server, the client can not modify the MegaGameRules, and neither the
+Mega Randomizer Options screen nor the button to open it show up.
+
+
+
 
 ## Drop Randomization
 

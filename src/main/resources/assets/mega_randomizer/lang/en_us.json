@@ -10,4 +10,5 @@
   "gamerule.doBlockRandomDrops": "Randomize drops from blocks",
   "gamerule.doEntityRandomDrops": "Randomize drops from mobs",
   "gamerule.doPlayerRandomDrops": "Randomize drops from players"
+
 }
