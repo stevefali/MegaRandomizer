@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 
@@ -36,9 +37,9 @@ public class BlockDropsModifier extends LootModifier {
 
         if (context.getLevel().getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS)) {
             // Replace the loot items
-            ObjectArrayList<ItemStack> randomizedLoot = new ObjectArrayList<>();
+            ArrayList<ItemStack> randomizedLoot = new ArrayList<>();
             generatedLoot.forEach(vanillaLootItem -> {
-                randomizedLoot.add(new ItemStack(RandomDrops.getRandomizedItem(vanillaLootItem).getItem()));
+                randomizedLoot.add(new ItemStack(RandomDrops.getRandomizedItem(vanillaLootItem).getItem(), vanillaLootItem.getCount()));
             });
             generatedLoot.clear();
             generatedLoot.addAll(randomizedLoot);
