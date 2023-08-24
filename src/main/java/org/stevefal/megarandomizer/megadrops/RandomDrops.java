@@ -18,13 +18,17 @@ public class RandomDrops {
 
 
     public static ItemStack getRandomizedItem(ItemStack vanillaItem) {
+        // First check if the list is null in case it isn't quite ready yet
+        if (masterList != null) {
+            int index = masterList.indexOf(vanillaItem.getItem());
 
-        int index = masterList.indexOf(vanillaItem.getItem());
-
-        if (index == -1) {
-            return vanillaItem;
+            if (index == -1) {
+                return vanillaItem;
+            } else {
+                return shuffledList.get(index).getDefaultInstance();
+            }
         } else {
-            return shuffledList.get(index).getDefaultInstance();
+            return vanillaItem;
         }
     }
 
