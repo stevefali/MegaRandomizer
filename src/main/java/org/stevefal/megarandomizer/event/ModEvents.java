@@ -3,6 +3,7 @@ package org.stevefal.megarandomizer.event;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -33,7 +34,9 @@ public class ModEvents {
                 if (lev.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS)) {
                     ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
                     event.getDrops().forEach(vanillaDrop -> {
-                        randomizedDrops.add(new ItemEntity(lev, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrop.getItem())));
+                        for (int i = 0; i < vanillaDrop.getItem().getCount(); i++) {
+                            randomizedDrops.add(new ItemEntity(lev, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrop.getItem())));
+                        }
                     });
                     event.getDrops().clear();
                     event.getDrops().addAll(randomizedDrops);
@@ -42,7 +45,9 @@ public class ModEvents {
                 if (lev.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS)) {
                     ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
                     event.getDrops().forEach(vanillaDrop -> {
-                        randomizedDrops.add(new ItemEntity(lev, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrop.getItem())));
+                        for (int i = 0; i < vanillaDrop.getItem().getCount(); i++) {
+                            randomizedDrops.add(new ItemEntity(lev, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrop.getItem())));
+                        }
                     });
                     event.getDrops().clear();
                     event.getDrops().addAll(randomizedDrops);
