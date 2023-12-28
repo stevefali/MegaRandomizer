@@ -32,28 +32,25 @@ public class ModEvents {
         if (!lev.isClientSide) {
             if (ent instanceof Player) {
                 if (lev.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS)) {
-                    ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
-                    event.getDrops().forEach(vanillaDrop -> {
-                        for (int i = 0; i < vanillaDrop.getItem().getCount(); i++) {
-                            randomizedDrops.add(new ItemEntity(lev, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrop.getItem())));
-                        }
-                    });
-                    event.getDrops().clear();
-                    event.getDrops().addAll(randomizedDrops);
+                    randomizeEntityDrops(event, lev, ent);
                 }
             } else {
                 if (lev.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS)) {
-                    ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
-                    event.getDrops().forEach(vanillaDrop -> {
-                        for (int i = 0; i < vanillaDrop.getItem().getCount(); i++) {
-                            randomizedDrops.add(new ItemEntity(lev, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrop.getItem())));
-                        }
-                    });
-                    event.getDrops().clear();
-                    event.getDrops().addAll(randomizedDrops);
+                    randomizeEntityDrops(event, lev, ent);
                 }
             }
         }
+    }
+
+    private static void randomizeEntityDrops(LivingDropsEvent event, Level level, LivingEntity ent) {
+        ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
+        event.getDrops().forEach(vanillaDrops -> {
+            for (int i = 0; i < vanillaDrops.getItem().getCount(); i++) {
+                randomizedDrops.add(new ItemEntity(level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrops.getItem())));
+            }
+        });
+        event.getDrops().clear();
+        event.getDrops().addAll(randomizedDrops);
     }
 
 }
