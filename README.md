@@ -5,6 +5,9 @@ Welcome to Mega Randomizer, the Minecraft randomizer that you can customize!
 This mod comes with custom game rules that allow you to individually turn on or off item drop randomization for
 Blocks, Entities or Players. (More to come in future versions!)
 
+Mega Randomizer is available to download on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mega-randomizer).
+I also made another version for Minecraft 1.16.5 in [another repository](https://github.com/stevefali/MegaRandomizer1.16.5).
+
 # Basic Rundown of how my Code Works:
 
 ## Randomized Drops Customization
@@ -58,8 +61,7 @@ This meant I had to create my own LootItemCondition class, BlockDropSourceCondit
 The available LootItemCondition classes all checked for conditions that were a bit too specific for my purposes,
 so I created BlockDropSourceCondition.java, which extends LootItemCondition. The test() method of this class simply checks if the drops are coming from
 a block.  
-However, the access of LootItemConditions.register() is private, so in order to register my LootItemCondition, I had to
-set up an access transformer for that method, which requires the SRG name for the method. I got the SRG mapping from
+However, the access of LootItemConditions.register() is private, so in order to register my LootItemCondition, I had to change the access modifier to public for that method using Gradle, which requires the SRG name for the method. I got the SRG mapping from
 the linkie.shedaniel.dev website.  
 
 #### Codec
