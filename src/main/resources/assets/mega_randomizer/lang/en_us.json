@@ -6,6 +6,12 @@
   "menu.megarandomoptions.block_drops_off": "Randomize Block Drops: OFF",
   "menu.megarandomoptions.player_drops_on": "Randomize Player Drops: ON",
   "menu.megarandomoptions.player_drops_off": "Randomize Player Drops: OFF",
+  "menu.megarandomoptions.exclude_creative_on": "Exclude Creative Items: ON",
+  "menu.megarandomoptions.exclude_creative_off": "Exclude Creative Items: OFF",
+  "menu.megarandomoptions.exclude_spawneggs_on": "Exclude Spawn Eggs: ON",
+  "menu.megarandomoptions.exclude_spawneggs_off": "Exclude Spawn Eggs: OFF",
+  "menu.megarandomoptions.exclude_heads_on": "Exclude all Heads and Skulls: ON",
+  "menu.megarandomoptions.exclude_heads_off": "Exclude all Heads and Skulls: OFF",
 
   "gamerule.doBlockRandomDrops": "Randomize drops from blocks",
   "gamerule.doEntityRandomDrops": "Randomize drops from mobs",
