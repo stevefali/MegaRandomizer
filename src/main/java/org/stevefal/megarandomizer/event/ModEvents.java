@@ -63,5 +63,11 @@ public class ModEvents {
         event.getDrops().addAll(randomizedDrops);
     }
 
+    @SubscribeEvent
+    public static void onCommandsRegister(RegisterCommandsEvent event) {
+        new ReshuffleCommand(event.getDispatcher());
+
+        ConfigCommand.register(event.getDispatcher());
+    }
 
 }
