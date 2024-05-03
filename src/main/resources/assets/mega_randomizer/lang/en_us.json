@@ -9,6 +9,9 @@
 
   "gamerule.doBlockRandomDrops": "Randomize drops from blocks",
   "gamerule.doEntityRandomDrops": "Randomize drops from mobs",
-  "gamerule.doPlayerRandomDrops": "Randomize drops from players"
+  "gamerule.doPlayerRandomDrops": "Randomize drops from players",
+  "gamerule.excludeCreativeItems": "Exclude Creative Items",
+  "gamerule.excludeSpawnEggs": "Exclude Spawn Eggs",
+  "gamerule.excludeHeads": "Exclude all Heads and Skulls"
 
 }
