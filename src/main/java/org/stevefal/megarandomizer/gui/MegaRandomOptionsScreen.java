@@ -6,11 +6,14 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
+import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 import org.stevefal.megarandomizer.networking.packets.SetGameRulesC2SPacket;
 
@@ -36,6 +39,7 @@ public class MegaRandomOptionsScreen extends Screen {
 
 
     private final boolean showMegaRandomOptions;
+    private final long seed;
 
     private static final Component ENTITY_DROPS_ON = Component.translatable("menu.megarandomoptions.entity_drops_on");
     private static final Component ENTITY_DROPS_OFF = Component.translatable("menu.megarandomoptions.entity_drops_off");
@@ -54,12 +58,13 @@ public class MegaRandomOptionsScreen extends Screen {
     private static final Component DONE = Component.literal("Done");
 
 
-    public MegaRandomOptionsScreen(Screen lastScreen, Level level, boolean showMegaRandomOptions) {
+    public MegaRandomOptionsScreen(Screen lastScreen, Level level, boolean showMegaRandomOptions, long seed) {
         super(Component.translatable("menu.megarandomoptions"));
 
         this.lastScreen = lastScreen;
         this.level = level;
         this.showMegaRandomOptions = showMegaRandomOptions;
+        this.seed = seed;
     }
 
 
@@ -104,6 +109,10 @@ public class MegaRandomOptionsScreen extends Screen {
         }).width(204).build(), 2);
 
         this.excludeCreativeButton = gridlayout$rowhelper.addChild(Button.builder(getCreativeComponent(), (button) -> {
+            RandomDrops.shuffleItems(seed,
+                !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS));
             MegaMessages.sendToServer(new SetGameRulesC2SPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                 level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
                 level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
@@ -113,6 +122,10 @@ public class MegaRandomOptionsScreen extends Screen {
         }).width(204).build(), 2);
 
         this.excludeSpawnEggsButton = gridlayout$rowhelper.addChild(Button.builder(getSpawnEggsComponent(), (button) -> {
+            RandomDrops.shuffleItems(seed,
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
+                !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS));
             MegaMessages.sendToServer(new SetGameRulesC2SPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                 level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
                 level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
@@ -122,6 +135,10 @@ public class MegaRandomOptionsScreen extends Screen {
         }).width(204).build(), 2);
 
         this.excludeHeadsButton = gridlayout$rowhelper.addChild(Button.builder(getHeadsComponent(), (button) -> {
+            RandomDrops.shuffleItems(seed,
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
+                !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS));
             MegaMessages.sendToServer(new SetGameRulesC2SPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                 level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
                 level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
