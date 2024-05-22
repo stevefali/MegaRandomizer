@@ -32,7 +32,10 @@ public class RequestGameRulesSyncC2SPacket {
 
             MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS)), player);
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
+                level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS)), player);
 
         });
         return true;

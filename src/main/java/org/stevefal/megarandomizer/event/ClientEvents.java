@@ -19,9 +19,20 @@ public class ClientEvents {
         // Intercept the stock PauseScreen and instead display ModPauseScreen
         @SubscribeEvent
         public static void onPauseMenuTriggered(ScreenEvent.Init event) {
-            boolean isSinglePlayer = Minecraft.getInstance().isSingleplayer();
+            final Minecraft minecraft = Minecraft.getInstance();
+            boolean isSinglePlayer = minecraft.isSingleplayer();
             if (event.getScreen() instanceof PauseScreen) {
-                Minecraft.getInstance().setScreen(new ModPauseScreen(true, isSinglePlayer));
+                long seed = 0;
+                if(minecraft.hasSingleplayerServer() && minecraft.getSingleplayerServer() != null) {
+                    seed = minecraft.getSingleplayerServer().getWorldData().worldGenOptions().seed();
+                } else if(minecraft.level != null && minecraft.level.getServer() != null) {
+                    seed = minecraft.level.getServer().getWorldData().worldGenOptions().seed();
+                } else if (minecraft.player != null && minecraft.player.clientLevel.getServer() != null){
+                    seed = minecraft.player.clientLevel.getServer().getWorldData().worldGenOptions().seed();
+                } else {
+                    //do nothing because it should not get here (if it got here we have a problem)
+                }
+                minecraft.setScreen(new ModPauseScreen(true, isSinglePlayer, seed));
             }
         }
     }

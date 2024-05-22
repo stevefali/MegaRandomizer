@@ -47,12 +47,14 @@ import java.util.function.Supplier;
         private Button disconnectButton;
 
         private boolean isSinglePlayer;
+        private long seed;
         private Button megaRandomButton;
 
-        public ModPauseScreen(boolean pShowPauseMenu, boolean isSinglePlayer) {
+        public ModPauseScreen(boolean pShowPauseMenu, boolean isSinglePlayer, long seed) {
             super(!isSinglePlayer ? GAME : PAUSED);
             this.showPauseMenu = pShowPauseMenu;
             this.isSinglePlayer = isSinglePlayer;
+            this.seed = seed;
         }
 
         protected void init() {
@@ -97,7 +99,7 @@ import java.util.function.Supplier;
                 // MegaRandomizer Options Button
                 this.megaRandomButton = gridlayout$rowhelper.addChild(Button.builder(MEGA_RANDOMIZER_MENU, (button) -> {
                     MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
-                    minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true));
+                    minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
                 }).width(BUTTON_WIDTH_FULL).build(), 2);
             }
 

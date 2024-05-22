@@ -4,12 +4,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.WorldData;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.command.ConfigCommand;
 import org.stevefal.megarandomizer.MegaRandomizer;
+import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 
@@ -21,7 +26,12 @@ public class ModEvents {
     // Setup and Shuffle the drops list when the server is ready
     @SubscribeEvent
     public static void onServerReady(ServerStartedEvent event) {
-        RandomDrops.shuffleItems(event.getServer().getWorldData().worldGenOptions().seed());
+        final WorldData worldData = event.getServer().getWorldData();
+        final GameRules gameRules = worldData.getGameRules();
+        final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS);
+        final boolean excludeSpawnEggs = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS);
+        final boolean excludeHeads = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDEHEADS);
+        RandomDrops.shuffleItems(worldData.worldGenOptions().seed(), excludeCreativeItems, excludeSpawnEggs, excludeHeads);
     }
 
     // Randomize entity drops
@@ -51,6 +61,13 @@ public class ModEvents {
         });
         event.getDrops().clear();
         event.getDrops().addAll(randomizedDrops);
+    }
+
+    @SubscribeEvent
+    public static void onCommandsRegister(RegisterCommandsEvent event) {
+        new ReshuffleCommand(event.getDispatcher());
+
+        ConfigCommand.register(event.getDispatcher());
     }
 
 }
