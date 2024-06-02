@@ -1,14 +1,13 @@
 package org.stevefal.megarandomizer.megadrops;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 public class RandomDrops {
 
@@ -37,6 +36,10 @@ public class RandomDrops {
         ArrayList<Item> copiedList = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
 
         masterList = new ArrayList<>(copiedList);
+
+        // Sort master list alphabetically to keep order consistent after saves.
+        masterList.sort(Comparator.comparing(Item::toString));
+
         masterList.removeAll(Arrays.asList(excludeItems));
         if(doExcludeCreativeItems) {
             masterList.removeAll(Arrays.asList(excludeCreativeItems));

@@ -13,6 +13,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
+import org.apache.commons.lang3.ObjectUtils;
 import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
@@ -69,5 +70,4 @@ public class ModEvents {
 
         ConfigCommand.register(event.getDispatcher());
     }
-
 }
