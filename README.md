@@ -5,6 +5,8 @@ Welcome to Mega Randomizer, the Minecraft randomizer that you can customize!
 This mod comes with custom game rules that allow you to individually turn on or off item drop randomization for
 Blocks, Entities or Players. (More to come in future versions!)
 
+You can also choose to include or exclude non-survival mode items as available randomized drops. (Special thanks to TheUnknownLarry for contributing this feature!)
+
 Mega Randomizer is available to download on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mega-randomizer).
 I also made another version for Minecraft 1.16.5 in [another repository](https://github.com/stevefali/MegaRandomizer1.16.5).
 
