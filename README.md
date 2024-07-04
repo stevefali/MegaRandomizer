@@ -10,6 +10,7 @@ You can also choose to include or exclude non-survival mode items as available r
 Mega Randomizer is available to download on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mega-randomizer).
 I also made another version for Minecraft 1.16.5 in [another repository](https://github.com/stevefali/MegaRandomizer1.16.5).
 
+
 # Basic Rundown of how my Code Works:
 
 ## Randomized Drops Customization
@@ -93,5 +94,8 @@ list before it is shuffled.
 When items are dropped in the game, whether by blocks or entities, the getRandomizedItem() method of RandomDrops.java
 takes the vanilla drop item and gets its index from the master list, then returns whatever item is at that index of 
 the shuffled list.
+
+## Help Support Mega Randomizer
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H5103UQ6)
 
 
