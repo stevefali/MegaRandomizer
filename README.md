@@ -8,7 +8,11 @@ Blocks, Entities or Players. (More to come in future versions!)
 You can also choose to include or exclude non-survival mode items as available randomized drops. (Special thanks to [TheUnknownLarry](https://github.com/TheUnknownLarry) for contributing this feature!)
 
 Mega Randomizer is available to download on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/mega-randomizer).
-I also made another version for Minecraft 1.16.5, which can be found in [this repository](https://github.com/stevefali/MegaRandomizer1.16.5). Version 1.7.10 is currently under construction in [this repo](https://github.com/stevefali/MegaRandomizer1.7.10), and version 1.12.2 is coming soon!
+
+### The repositories for the other versions of Mega Randomizer can be found here:
+- [1.16.5](https://github.com/stevefali/MegaRandomizer1.16.5)
+- [1.12.10](https://github.com/stevefali/MegaRandomizer1.12.10)
+- [1.7.10](https://github.com/stevefali/MegaRandomizer1.7.10)
 
 
 # Basic Rundown of how my Code Works:
