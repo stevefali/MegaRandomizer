@@ -1,4 +1,4 @@
-package org.stevefal.megarandomizer.blocklot;
+package org.stevefal.megarandomizer.blockloot;
 
 import com.mojang.serialization.Codec;
 import net.minecraftforge.common.loot.IGlobalLootModifier;

@@ -3,7 +3,6 @@ package org.stevefal.megarandomizer.event;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.WorldData;
@@ -13,7 +12,6 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
-import org.apache.commons.lang3.ObjectUtils;
 import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
@@ -22,7 +20,7 @@ import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import java.util.ArrayList;
 
 @Mod.EventBusSubscriber(modid = MegaRandomizer.MODID)
-public class ModEvents {
+public class ServerEvents {
 
     // Setup and Shuffle the drops list when the server is ready
     @SubscribeEvent

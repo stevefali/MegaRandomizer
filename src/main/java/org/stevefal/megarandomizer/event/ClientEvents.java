@@ -21,7 +21,7 @@ public class ClientEvents {
         public static void onPauseMenuTriggered(ScreenEvent.Init event) {
             final Minecraft minecraft = Minecraft.getInstance();
             boolean isSinglePlayer = minecraft.isSingleplayer();
-            if (event.getScreen() instanceof PauseScreen) {
+            if (event.getScreen() instanceof PauseScreen && !(event.getScreen() instanceof ModPauseScreen)) {
                 long seed = 0;
                 if(minecraft.hasSingleplayerServer() && minecraft.getSingleplayerServer() != null) {
                     seed = minecraft.getSingleplayerServer().getWorldData().worldGenOptions().seed();

@@ -1,4 +1,4 @@
-package org.stevefal.megarandomizer.blocklot.condition;
+package org.stevefal.megarandomizer.blockloot.condition;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonDeserializationContext;

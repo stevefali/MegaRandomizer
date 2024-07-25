@@ -1,4 +1,4 @@
-package org.stevefal.megarandomizer.blocklot.condition;
+package org.stevefal.megarandomizer.blockloot.condition;
 
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;

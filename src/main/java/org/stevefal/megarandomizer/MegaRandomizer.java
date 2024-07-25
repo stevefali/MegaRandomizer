@@ -12,8 +12,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-import org.stevefal.megarandomizer.blocklot.MegaLootModifiers;
-import org.stevefal.megarandomizer.blocklot.condition.MegaLootItemConditions;
+import org.stevefal.megarandomizer.blockloot.MegaLootModifiers;
+import org.stevefal.megarandomizer.blockloot.condition.MegaLootItemConditions;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 
