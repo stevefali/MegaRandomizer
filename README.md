@@ -100,6 +100,8 @@ takes the vanilla drop item and gets its index from the master list, then return
 the shuffled list.
 
 ## Help Support Mega Randomizer
+If you like Mega Randomizer, consider buying me a cup of coffee! Your generosity helps keep this project going.
+
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H5103UQ6)
 
 
