@@ -100,8 +100,8 @@ takes the vanilla drop item and gets its index from the master list, then return
 the shuffled list.
 
 
-### Update 10/2024 
-- Mega Randomizer for Minecraft version 1.21 is on the way!
+### Update 11/2024 
+- Mega Randomizer for Minecraft version 1.21 is under construction!
 
 ## Help Support Mega Randomizer
 If you like Mega Randomizer, consider buying me a cup of coffee! Your generosity helps keep this project going.
