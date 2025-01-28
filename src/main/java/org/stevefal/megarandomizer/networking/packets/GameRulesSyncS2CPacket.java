@@ -2,10 +2,9 @@ package org.stevefal.megarandomizer.networking.packets;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 
-import java.util.function.Supplier;
 
 public class GameRulesSyncS2CPacket {
 
@@ -43,8 +42,7 @@ public class GameRulesSyncS2CPacket {
         buf.writeBoolean(isExcludeHeads);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
+    public boolean handle(CustomPayloadEvent.Context context) {
         context.enqueueWork(() -> {
             // Client side!
             Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_DOBLOCKRANDOMDROPS).set(isDoBlockRandomDrops, null);

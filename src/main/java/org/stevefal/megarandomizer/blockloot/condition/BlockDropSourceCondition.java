@@ -4,6 +4,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
@@ -14,9 +18,19 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 
 import java.util.Set;
 
-public class BlockDropSourceCondition implements LootItemCondition {
+public record BlockDropSourceCondition(Block block) implements LootItemCondition {
+
+    public static final MapCodec<BlockDropSourceCondition> CODEC = RecordCodecBuilder.mapCodec((builderInst) -> {
+        return builderInst.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("block")
+                .forGetter(BlockDropSourceCondition::block)).apply(builderInst, BlockDropSourceCondition::new);
+    });
+
     public LootItemConditionType getType() {
         return LootItemConditions.BLOCK_STATE_PROPERTY;
+    }
+
+    public BlockDropSourceCondition(Block block) {
+        this.block = block;
     }
 
     /**
@@ -36,13 +50,19 @@ public class BlockDropSourceCondition implements LootItemCondition {
         }
     }
 
-    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<BlockDropSourceCondition> {
-
-        public void serialize(JsonObject jsonObject, BlockDropSourceCondition blockDropSourceCondition, JsonSerializationContext jsonSerializationContext) {
-        }
-
-        public BlockDropSourceCondition deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
-            return new BlockDropSourceCondition();
-        }
+    public Block block() {
+        return this.block;
     }
+
+
+//    public static class Serializer extends MapCodec<LootItemCondition> implements net.minecraft.world.level.storage.loot.Serializer<BlockDropSourceCondition> {
+//
+//        public void serialize(JsonObject jsonObject, BlockDropSourceCondition blockDropSourceCondition, JsonSerializationContext jsonSerializationContext) {
+//        }
+//
+//        public BlockDropSourceCondition deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
+//            return new BlockDropSourceCondition();
+//            LootItemConditions
+//        }
+//    }
 }
