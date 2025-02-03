@@ -24,7 +24,7 @@ public class MegaGameRules {
 
         RULE_EXCLUDESPAWNEGGS = GameRules.register("excludeSpawnEggs", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_EXCLUDEHEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_EXCLUDEHEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
 
     }
 

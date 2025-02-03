@@ -62,16 +62,16 @@ public class RandomDrops {
             Items.STRUCTURE_VOID,
             Items.STRUCTURE_BLOCK,
             Items.JIGSAW,
-            Items.COMMAND_BLOCK_MINECART
+            Items.COMMAND_BLOCK_MINECART,
+            Items.BARRIER,
+            Items.LIGHT,
+            Items.DEBUG_STICK
     };
 
     public static final Item[] excludeCreativeItems = {
         Items.BEDROCK,
         Items.SPAWNER,
         Items.END_PORTAL_FRAME,
-        Items.BARRIER,
-        Items.LIGHT,
-        Items.DEBUG_STICK
     };
 
     public static final Item[] excludeSpawnEggs = {
@@ -160,7 +160,6 @@ public class RandomDrops {
         Items.CREEPER_HEAD,
         Items.SKELETON_SKULL,
         Items.WITHER_SKELETON_SKULL,
-        Items.DRAGON_HEAD,
         Items.PIGLIN_HEAD
     };
 

@@ -1,9 +1,6 @@
 package org.stevefal.megarandomizer.blockloot.condition;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,7 +18,7 @@ import java.util.Set;
 public record BlockDropSourceCondition(Block block) implements LootItemCondition {
 
     public static final MapCodec<BlockDropSourceCondition> CODEC = RecordCodecBuilder.mapCodec((builderInst) -> {
-        return builderInst.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("block")
+        return builderInst.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("value")
                 .forGetter(BlockDropSourceCondition::block)).apply(builderInst, BlockDropSourceCondition::new);
     });
 
@@ -30,7 +27,7 @@ public record BlockDropSourceCondition(Block block) implements LootItemCondition
     }
 
     public BlockDropSourceCondition(Block block) {
-        this.block = block;
+        this.block = null;
     }
 
     /**
@@ -49,20 +46,4 @@ public record BlockDropSourceCondition(Block block) implements LootItemCondition
             return false;
         }
     }
-
-    public Block block() {
-        return this.block;
-    }
-
-
-//    public static class Serializer extends MapCodec<LootItemCondition> implements net.minecraft.world.level.storage.loot.Serializer<BlockDropSourceCondition> {
-//
-//        public void serialize(JsonObject jsonObject, BlockDropSourceCondition blockDropSourceCondition, JsonSerializationContext jsonSerializationContext) {
-//        }
-//
-//        public BlockDropSourceCondition deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
-//            return new BlockDropSourceCondition();
-//            LootItemConditions
-//        }
-//    }
 }

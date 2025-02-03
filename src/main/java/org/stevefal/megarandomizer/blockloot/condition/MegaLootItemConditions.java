@@ -10,7 +10,6 @@ public class MegaLootItemConditions {
 
 
     public static void register() {
-//        BLOCK_DROP_SOURCE = LootItemConditions.register("block_drop_source", new BlockDropSourceCondition.Serializer());
 
         BLOCK_DROP_SOURCE = Registry.register(BuiltInRegistries.LOOT_CONDITION_TYPE,
                 ResourceLocation.withDefaultNamespace("block_drop_source"),
