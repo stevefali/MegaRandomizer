@@ -28,8 +28,8 @@ public class MegaRandomizer {
 
 
 
-    public MegaRandomizer() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public MegaRandomizer(FMLJavaModLoadingContext context) {
+        IEventBus modEventBus = context.getModEventBus();
 
         // Register the block loot modifier
         MegaLootModifiers.register(modEventBus);
@@ -65,7 +65,6 @@ public class MegaRandomizer {
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
