@@ -1,11 +1,7 @@
 package org.stevefal.megarandomizer.networking;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.network.*;
 import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.networking.packets.GameRulesSyncS2CPacket;
 import org.stevefal.megarandomizer.networking.packets.RequestGameRulesSyncC2SPacket;
@@ -21,13 +17,15 @@ public class MegaMessages {
     }
 
     public static void register() {
-        SimpleChannel netReg = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(MegaRandomizer.MODID, "messages"))
-                .networkProtocolVersion(() -> "1.0")
-                .clientAcceptedVersions(s -> true)
-                .serverAcceptedVersions(s -> true)
+        SimpleChannel netReg = ChannelBuilder
+                .named(MegaRandomizer.MODID + "_messages")
+                .networkProtocolVersion(1)
+                .clientAcceptedVersions((s, a) -> true)
+                .serverAcceptedVersions((s, a) -> true)
                 .simpleChannel();
         INSTANCE = netReg;
+
+
 
         /* To Server */
         netReg.messageBuilder(RequestGameRulesSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
@@ -50,11 +48,12 @@ public class MegaMessages {
                 .add();
     }
 
+
     public static <MSG> void sendToServer(MSG message) {
-        INSTANCE.sendToServer(message);
+        INSTANCE.send(message, PacketDistributor.SERVER.noArg());
     }
 
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
-        INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
+        INSTANCE.send(message, PacketDistributor.PLAYER.with(player));
     }
 }

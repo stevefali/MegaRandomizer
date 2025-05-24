@@ -1,7 +1,7 @@
 package org.stevefal.megarandomizer.blockloot;
 
 import com.google.common.base.Suppliers;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
@@ -19,11 +19,10 @@ import java.util.function.Supplier;
 
 public class BlockDropsModifier extends LootModifier {
 
-    // Codec for the system to read the loot modifier json file to get the BlockDropSourceCondition and
-    // trigger the doApply() method of this class
-    public static final Supplier<Codec<BlockDropsModifier>> BLOCK_CODEC = Suppliers.memoize(() ->
-            RecordCodecBuilder.create(inst -> codecStart(inst)
+    public static final Supplier<MapCodec<BlockDropsModifier>> BLOCK_CODEC = Suppliers.memoize(() ->
+            RecordCodecBuilder.mapCodec(inst -> codecStart(inst)
                     .apply(inst, BlockDropsModifier::new)));
+
 
     protected BlockDropsModifier(LootItemCondition[] conditionsIn) {
         super(conditionsIn);
@@ -47,7 +46,7 @@ public class BlockDropsModifier extends LootModifier {
     }
 
     @Override
-    public Codec<? extends IGlobalLootModifier> codec() {
+    public MapCodec<? extends IGlobalLootModifier> codec() {
         return BLOCK_CODEC.get();
     }
 }

@@ -1,9 +1,10 @@
 package org.stevefal.megarandomizer.blockloot.condition;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
@@ -14,9 +15,19 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditions;
 
 import java.util.Set;
 
-public class BlockDropSourceCondition implements LootItemCondition {
+public record BlockDropSourceCondition(Block block) implements LootItemCondition {
+
+    public static final MapCodec<BlockDropSourceCondition> CODEC = RecordCodecBuilder.mapCodec((builderInst) -> {
+        return builderInst.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("value")
+                .forGetter(BlockDropSourceCondition::block)).apply(builderInst, BlockDropSourceCondition::new);
+    });
+
     public LootItemConditionType getType() {
         return LootItemConditions.BLOCK_STATE_PROPERTY;
+    }
+
+    public BlockDropSourceCondition(Block block) {
+        this.block = null;
     }
 
     /**
@@ -33,16 +44,6 @@ public class BlockDropSourceCondition implements LootItemCondition {
             return true;
         } else {
             return false;
-        }
-    }
-
-    public static class Serializer implements net.minecraft.world.level.storage.loot.Serializer<BlockDropSourceCondition> {
-
-        public void serialize(JsonObject jsonObject, BlockDropSourceCondition blockDropSourceCondition, JsonSerializationContext jsonSerializationContext) {
-        }
-
-        public BlockDropSourceCondition deserialize(JsonObject jsonObject, JsonDeserializationContext jsonDeserializationContext) {
-            return new BlockDropSourceCondition();
         }
     }
 }

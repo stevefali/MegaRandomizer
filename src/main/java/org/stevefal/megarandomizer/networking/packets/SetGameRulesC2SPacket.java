@@ -3,11 +3,10 @@ package org.stevefal.megarandomizer.networking.packets;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.event.network.CustomPayloadEvent;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 
-import java.util.function.Supplier;
 
 public class SetGameRulesC2SPacket {
 
@@ -46,8 +45,7 @@ public class SetGameRulesC2SPacket {
     }
 
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
+    public boolean handle(CustomPayloadEvent.Context context) {
         context.enqueueWork(() -> {
             // Server side
             ServerPlayer player = context.getSender();
