@@ -99,6 +99,10 @@ When items are dropped in the game, whether by blocks or entities, the getRandom
 takes the vanilla drop item and gets its index from the master list, then returns whatever item is at that index of 
 the shuffled list.
 
+
+### Update 11/2024 
+- Mega Randomizer for Minecraft version 1.21 is under construction!
+
 ## Help Support Mega Randomizer
 If you like Mega Randomizer, consider buying me a cup of coffee! Your generosity helps keep this project going.
 
