@@ -13,6 +13,7 @@ Mega Randomizer is available to download on [CurseForge](https://www.curseforge.
 - [1.16.5](https://github.com/stevefali/MegaRandomizer1.16.5)
 - [1.12.10](https://github.com/stevefali/MegaRandomizer1.12.10)
 - [1.7.10](https://github.com/stevefali/MegaRandomizer1.7.10)
+- [1.20.1](https://github.com/stevefali/MegaRandomizer/tree/1.20.1) (branch)
 
 
 # Basic Rundown of how my Code Works:
@@ -98,10 +99,6 @@ list before it is shuffled.
 When items are dropped in the game, whether by blocks or entities, the getRandomizedItem() method of RandomDrops.java
 takes the vanilla drop item and gets its index from the master list, then returns whatever item is at that index of 
 the shuffled list.
-
-
-### Update 11/2024 
-- Mega Randomizer for Minecraft version 1.21 is under construction!
 
 ## Help Support Mega Randomizer
 If you like Mega Randomizer, consider buying me a cup of coffee! Your generosity helps keep this project going.
