@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
@@ -33,12 +33,12 @@ public record BlockDropSourceCondition(Block block) implements LootItemCondition
     /**
      * Get the parameters used by this object.
      */
-    public Set<LootContextParam<?>> getReferencedContextParams() {
+    public Set<ContextKey<?>> getReferencedContextParams() {
         return ImmutableSet.of(LootContextParams.BLOCK_STATE);
     }
 
     public boolean test(LootContext lootContext) {
-        BlockState blockstate = lootContext.getParamOrNull(LootContextParams.BLOCK_STATE);
+        BlockState blockstate = lootContext.getOptionalParameter(LootContextParams.BLOCK_STATE);
         // Check if the drops are from a block
         if (blockstate != null) {
             return true;

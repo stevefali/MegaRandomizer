@@ -6,6 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
@@ -30,9 +31,9 @@ public class BlockDropsModifier extends LootModifier {
 
     // Called when BlockDropSourceCondition.test() returns true
     @Override
-    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+    protected @NotNull ObjectArrayList<ItemStack> doApply(LootTable lootTable, ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 
-        if (context.getLevel().getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS)) {
+        if (context.getLevel().getGameRules().getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS)) {
             // Replace the loot items
             ArrayList<ItemStack> randomizedLoot = new ArrayList<>();
             generatedLoot.forEach(vanillaLootItem -> {

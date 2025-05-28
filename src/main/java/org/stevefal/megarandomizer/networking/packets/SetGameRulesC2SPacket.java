@@ -52,12 +52,12 @@ public class SetGameRulesC2SPacket {
             ServerLevel level = player.serverLevel();
 
             // Set the rules
-            level.getGameRules().getRule(MegaGameRules.RULE_DOBLOCKRANDOMDROPS).set(isDoBlockRandomDrops, level.getServer());
-            level.getGameRules().getRule(MegaGameRules.RULE_DOENTITYRANDOMDROPS).set(isDoEntityRandomDrops, level.getServer());
-            level.getGameRules().getRule(MegaGameRules.RULE_DOPLAYERRANDOMDROPS).set(isDoPlayerRandomDrops, level.getServer());
-            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDECREATIVEITEMS).set(isExcludeCreativeItems, level.getServer());
-            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDESPAWNEGGS).set(isExcludeSpawnEggs, level.getServer());
-            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDEHEADS).set(isExcludeHeads, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS).set(isDoBlockRandomDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_ENTITY_RANDOMDROPS).set(isDoEntityRandomDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS).set(isDoPlayerRandomDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS).set(isExcludeCreativeItems, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS).set(isExcludeSpawnEggs, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_HEADS).set(isExcludeHeads, level.getServer());
 
             // Sync the data back to the client
             MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(isDoBlockRandomDrops, isDoEntityRandomDrops, isDoPlayerRandomDrops, isExcludeCreativeItems, isExcludeSpawnEggs, isExcludeHeads), player);

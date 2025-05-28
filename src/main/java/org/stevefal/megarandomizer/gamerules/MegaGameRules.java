@@ -4,27 +4,27 @@ import net.minecraft.world.level.GameRules;
 
 public class MegaGameRules {
 
-    public static GameRules.Key<GameRules.BooleanValue> RULE_DOBLOCKRANDOMDROPS;
-    public static GameRules.Key<GameRules.BooleanValue> RULE_DOENTITYRANDOMDROPS;
-    public static GameRules.Key<GameRules.BooleanValue> RULE_DOPLAYERRANDOMDROPS;
-    public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDECREATIVEITEMS;
-    public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDESPAWNEGGS;
-    public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDEHEADS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_DO_BLOCK_RANDOMDROPS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_DO_ENTITY_RANDOMDROPS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_DO_PLAYER_RANDOMDROPS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_CREATIVEITEMS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_SPAWNEGGS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_HEADS;
 
 
 
     public static void register() {
-        RULE_DOBLOCKRANDOMDROPS = GameRules.register("doBlockRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_DO_BLOCK_RANDOMDROPS = GameRules.register("doBlockRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_DOENTITYRANDOMDROPS = GameRules.register("doEntityRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_DO_ENTITY_RANDOMDROPS = GameRules.register("doEntityRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_DOPLAYERRANDOMDROPS = GameRules.register("doPlayerRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_DO_PLAYER_RANDOMDROPS = GameRules.register("doPlayerRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_EXCLUDECREATIVEITEMS = GameRules.register("excludeCreativeItems", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_EXCLUDE_CREATIVEITEMS = GameRules.register("excludeCreativeItems", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_EXCLUDESPAWNEGGS = GameRules.register("excludeSpawnEggs", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_EXCLUDE_SPAWNEGGS = GameRules.register("excludeSpawnEggs", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_EXCLUDEHEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
+        RULE_EXCLUDE_HEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
 
     }
 

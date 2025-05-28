@@ -19,9 +19,9 @@ public class ReshuffleCommand
 	private int execute(CommandContext<CommandSourceStack> context) {
 		final long seed = context.getSource().getServer().getWorldData().worldGenOptions().seed();
 		final GameRules gameRules = context.getSource().getServer().getWorldData().getGameRules();
-		final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS);
-		final boolean excludeSpawnEggs = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS);
-		final boolean excludeHeads = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDEHEADS);
+		final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS);
+		final boolean excludeSpawnEggs = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS);
+		final boolean excludeHeads = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS);
 		RandomDrops.shuffleItems(seed, excludeCreativeItems, excludeSpawnEggs, excludeHeads);
 
 		context.getSource().sendSuccess(() -> Component.literal("Reshuffled the random drops."), true);

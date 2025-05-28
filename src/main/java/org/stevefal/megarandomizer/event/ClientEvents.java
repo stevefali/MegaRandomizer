@@ -16,6 +16,7 @@ public class ClientEvents {
     @Mod.EventBusSubscriber(modid = MegaRandomizer.MODID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
 
+
         // Intercept the stock PauseScreen and instead display ModPauseScreen
         @SubscribeEvent
         public static void onPauseMenuTriggered(ScreenEvent.Init event) {

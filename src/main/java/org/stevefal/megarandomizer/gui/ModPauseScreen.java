@@ -43,7 +43,7 @@ public class ModPauseScreen extends PauseScreen {
 
             Button megaRandomButton = Button.builder(MEGA_RANDOMIZER_MENU, (button) -> {
                 MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
-                minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
+                minecraft.setScreen(new MegaRandomOptionsScreen(this, true, seed));
             }).width(BUTTON_WIDTH_FULL).build();
 
             this.addRenderableWidget(megaRandomButton);

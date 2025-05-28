@@ -1,9 +1,8 @@
 package org.stevefal.megarandomizer.networking.packets;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.event.network.CustomPayloadEvent;
-import org.stevefal.megarandomizer.gamerules.MegaGameRules;
+import org.stevefal.megarandomizer.gamerules.ClientSideRulesHolder;
 
 
 public class GameRulesSyncS2CPacket {
@@ -45,12 +44,12 @@ public class GameRulesSyncS2CPacket {
     public boolean handle(CustomPayloadEvent.Context context) {
         context.enqueueWork(() -> {
             // Client side!
-            Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_DOBLOCKRANDOMDROPS).set(isDoBlockRandomDrops, null);
-            Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_DOENTITYRANDOMDROPS).set(isDoEntityRandomDrops, null);
-            Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_DOPLAYERRANDOMDROPS).set(isDoPlayerRandomDrops, null);
-            Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDECREATIVEITEMS).set(isExcludeCreativeItems, null);
-            Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDESPAWNEGGS).set(isExcludeSpawnEggs, null);
-            Minecraft.getInstance().level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDEHEADS).set(isExcludeHeads, null);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS, isDoBlockRandomDrops);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS, isDoEntityRandomDrops);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS, isDoPlayerRandomDrops);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS, isExcludeCreativeItems);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS, isExcludeSpawnEggs);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS, isExcludeHeads);
         });
         return true;
     }

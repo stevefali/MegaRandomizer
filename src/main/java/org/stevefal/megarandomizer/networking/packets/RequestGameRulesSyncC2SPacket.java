@@ -29,12 +29,12 @@ public class RequestGameRulesSyncC2SPacket {
 
             ServerLevel level = player.serverLevel();
 
-            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS)), player);
+            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_ENTITY_RANDOMDROPS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS)), player);
 
         });
         return true;
