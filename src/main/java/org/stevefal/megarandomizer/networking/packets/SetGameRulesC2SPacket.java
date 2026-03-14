@@ -16,14 +16,16 @@ public class SetGameRulesC2SPacket {
     private final boolean isExcludeCreativeItems;
     private final boolean isExcludeSpawnEggs;
     private final boolean isExcludeHeads;
+    private final boolean isDoVolatileDrops;
 
-    public SetGameRulesC2SPacket(boolean isDoBlocks, boolean isDoEntities, boolean isDoPlayer, boolean isExcludeCreativeItems, boolean isExcludeSpawnEggs, boolean isExcludeHeads) {
+    public SetGameRulesC2SPacket(boolean isDoBlocks, boolean isDoEntities, boolean isDoPlayer, boolean isExcludeCreativeItems, boolean isExcludeSpawnEggs, boolean isExcludeHeads, boolean isDoVolatileDrops) {
         this.isDoBlockRandomDrops = isDoBlocks;
         this.isDoEntityRandomDrops = isDoEntities;
         this.isDoPlayerRandomDrops = isDoPlayer;
         this.isExcludeCreativeItems = isExcludeCreativeItems;
         this.isExcludeSpawnEggs = isExcludeSpawnEggs;
         this.isExcludeHeads = isExcludeHeads;
+        this.isDoVolatileDrops = isDoVolatileDrops;
     }
 
     public SetGameRulesC2SPacket(FriendlyByteBuf buf) {
@@ -33,6 +35,7 @@ public class SetGameRulesC2SPacket {
         this.isExcludeCreativeItems = buf.readBoolean();
         this.isExcludeSpawnEggs = buf.readBoolean();
         this.isExcludeHeads = buf.readBoolean();
+        this.isDoVolatileDrops = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -42,6 +45,7 @@ public class SetGameRulesC2SPacket {
         buf.writeBoolean(isExcludeCreativeItems);
         buf.writeBoolean(isExcludeSpawnEggs);
         buf.writeBoolean(isExcludeHeads);
+        buf.writeBoolean(isDoVolatileDrops);
     }
 
 
@@ -58,9 +62,10 @@ public class SetGameRulesC2SPacket {
             level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS).set(isExcludeCreativeItems, level.getServer());
             level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS).set(isExcludeSpawnEggs, level.getServer());
             level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_HEADS).set(isExcludeHeads, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_VOLATILE_DROPS).set(isDoVolatileDrops, level.getServer());
 
             // Sync the data back to the client
-            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(isDoBlockRandomDrops, isDoEntityRandomDrops, isDoPlayerRandomDrops, isExcludeCreativeItems, isExcludeSpawnEggs, isExcludeHeads), player);
+            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(isDoBlockRandomDrops, isDoEntityRandomDrops, isDoPlayerRandomDrops, isExcludeCreativeItems, isExcludeSpawnEggs, isExcludeHeads, isDoVolatileDrops), player);
         });
         return true;
     }

@@ -13,14 +13,16 @@ public class GameRulesSyncS2CPacket {
     private final boolean isExcludeCreativeItems;
     private final boolean isExcludeSpawnEggs;
     private final boolean isExcludeHeads;
+    private final boolean isDoVolatileDrops;
 
-    public GameRulesSyncS2CPacket(boolean isDoBlocks, boolean isDoEntities, boolean isDoPlayer, boolean isExcludeCreativeItems, boolean isExcludeSpawnEggs, boolean isExcludeHeads) {
+    public GameRulesSyncS2CPacket(boolean isDoBlocks, boolean isDoEntities, boolean isDoPlayer, boolean isExcludeCreativeItems, boolean isExcludeSpawnEggs, boolean isExcludeHeads, boolean isDoVolatileDrops) {
         this.isDoBlockRandomDrops = isDoBlocks;
         this.isDoEntityRandomDrops = isDoEntities;
         this.isDoPlayerRandomDrops = isDoPlayer;
         this.isExcludeCreativeItems = isExcludeCreativeItems;
         this.isExcludeSpawnEggs = isExcludeSpawnEggs;
         this.isExcludeHeads = isExcludeHeads;
+        this.isDoVolatileDrops = isDoVolatileDrops;
     }
 
     public GameRulesSyncS2CPacket(FriendlyByteBuf buf) {
@@ -30,6 +32,7 @@ public class GameRulesSyncS2CPacket {
         this.isExcludeCreativeItems = buf.readBoolean();
         this.isExcludeSpawnEggs = buf.readBoolean();
         this.isExcludeHeads = buf.readBoolean();
+        this.isDoVolatileDrops = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -39,6 +42,7 @@ public class GameRulesSyncS2CPacket {
         buf.writeBoolean(isExcludeCreativeItems);
         buf.writeBoolean(isExcludeSpawnEggs);
         buf.writeBoolean(isExcludeHeads);
+        buf.writeBoolean(isDoVolatileDrops);
     }
 
     public boolean handle(CustomPayloadEvent.Context context) {
@@ -50,6 +54,7 @@ public class GameRulesSyncS2CPacket {
             ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS, isExcludeCreativeItems);
             ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS, isExcludeSpawnEggs);
             ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS, isExcludeHeads);
+            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS, isDoVolatileDrops);
         });
         return true;
     }

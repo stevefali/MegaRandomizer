@@ -52,7 +52,8 @@ public class ServerEvents {
                     gameRules.getBoolean(MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS),
                     gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS),
                     gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS),
-                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS)), player);
+                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS),
+                    gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS)), player);
         }
     }
 
@@ -80,7 +81,8 @@ public class ServerEvents {
         ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
         event.getDrops().forEach(vanillaDrops -> {
             for (int i = 0; i < vanillaDrops.getItem().getCount(); i++) {
-                randomizedDrops.add(new ItemEntity(level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrops.getItem())));
+                randomizedDrops.add(new ItemEntity(level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrops.getItem(),
+                        level.getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS))));
             }
         });
         event.getDrops().clear();

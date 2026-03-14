@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -33,11 +34,14 @@ public class BlockDropsModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(LootTable lootTable, ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 
-        if (context.getLevel().getGameRules().getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS)) {
+        GameRules gameRules = context.getLevel().getGameRules();
+
+        if (gameRules.getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS)) {
+            Boolean isDoVolatile = gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS);
             // Replace the loot items
             ArrayList<ItemStack> randomizedLoot = new ArrayList<>();
             generatedLoot.forEach(vanillaLootItem -> {
-                randomizedLoot.add(new ItemStack(RandomDrops.getRandomizedItem(vanillaLootItem).getItem(), vanillaLootItem.getCount()));
+                randomizedLoot.add(new ItemStack(RandomDrops.getRandomizedItem(vanillaLootItem, isDoVolatile).getItem(), vanillaLootItem.getCount()));
             });
             generatedLoot.clear();
             generatedLoot.addAll(randomizedLoot);

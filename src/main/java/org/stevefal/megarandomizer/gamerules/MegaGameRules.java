@@ -10,6 +10,7 @@ public class MegaGameRules {
     public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_CREATIVEITEMS;
     public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_SPAWNEGGS;
     public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_HEADS;
+    public static GameRules.Key<GameRules.BooleanValue> RULE_DO_VOLATILE_DROPS;
 
 
 
@@ -25,6 +26,8 @@ public class MegaGameRules {
         RULE_EXCLUDE_SPAWNEGGS = GameRules.register("excludeSpawnEggs", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
         RULE_EXCLUDE_HEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
+
+        RULE_DO_VOLATILE_DROPS = GameRules.register("doVolatileDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
 
     }
 

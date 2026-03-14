@@ -14,10 +14,18 @@ public class RandomDrops {
     private static ArrayList<Item> shuffledList;
 
 
-    public static ItemStack getRandomizedItem(ItemStack vanillaItem) {
+    public static ItemStack getRandomizedItem(ItemStack vanillaItem, Boolean isDoVolatileDrops) {
         // First check if the list is null in case it isn't quite ready yet
         if (masterList != null) {
-            int index = masterList.indexOf(vanillaItem.getItem());
+            int index;
+
+            if (isDoVolatileDrops) {
+                Random rand = new Random();
+                int max = masterList.size();
+                index = rand.nextInt(max);
+            } else {
+                index = masterList.indexOf(vanillaItem.getItem());
+            }
 
             if (index == -1) {
                 return vanillaItem;
