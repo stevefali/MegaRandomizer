@@ -16,6 +16,8 @@ public class ClientSideRulesHolder {
     public static final String RULE_EXCLUDE_SPAWNEGGS = "excludeSpawnEggs";
     public static final String RULE_EXCLUDE_HEADS = "excludeHeads";
     public static final String RULE_DO_VOLATILE_DROPS = "doVolatileDrops";
+    public static final String RULE_DO_RANDOM_SPAWNS = "doRandomSpawns";
+    public static final String RULE_EXCLUDE_BOSSES = "excludeBosses";
 
 
     private static Map<String, Boolean> clientMegaGameRules = new HashMap<>();

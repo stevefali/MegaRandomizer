@@ -1,6 +1,10 @@
 package org.stevefal.megarandomizer.event;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -9,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,6 +23,8 @@ import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
+import org.stevefal.megarandomizer.megamobs.IMegaMob;
+import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 import org.stevefal.megarandomizer.networking.packets.GameRulesSyncS2CPacket;
 
@@ -36,7 +43,9 @@ public class ServerEvents {
         final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS);
         final boolean excludeSpawnEggs = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS);
         final boolean excludeHeads = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS);
+        final boolean excludeBosses = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES);
         RandomDrops.shuffleItems(worldData.worldGenOptions().seed(), excludeCreativeItems, excludeSpawnEggs, excludeHeads);
+        RandomSpawns.shuffleEntities(worldData.worldGenOptions().seed(), excludeBosses);
     }
 
     /**
@@ -53,7 +62,9 @@ public class ServerEvents {
                     gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS),
                     gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS),
                     gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS),
-                    gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS)), player);
+                    gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
+                    gameRules.getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
+                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)), player);
         }
     }
 
@@ -94,4 +105,29 @@ public class ServerEvents {
         new ReshuffleCommand(event.getDispatcher());
         ConfigCommand.register(event.getDispatcher());
     }
+
+    @SubscribeEvent
+    public static void onVanillaMobSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (event.getEntity().getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS)) {
+            if (event.getSpawnReason() != EntitySpawnReason.SPAWN_ITEM_USE) {
+
+                Entity vanillaEntity = event.getEntity();
+                ServerLevel level = event.getLevel().getLevel();
+
+                EntityType<?> randomizedEntityType = RandomSpawns.getRandomizedEntityType(vanillaEntity.getType());
+                Entity randomizedEntity = randomizedEntityType.create(level, EntitySpawnReason.COMMAND);
+
+                if (randomizedEntity != null) {
+                    event.setSpawnCancelled(true);
+                    vanillaEntity.remove(Entity.RemovalReason.DISCARDED);
+                    event.setCanceled(true);
+
+                    randomizedEntity.setPos(event.getX(), event.getY(), event.getZ());
+                    level.addFreshEntity(randomizedEntity);
+                    ((IMegaMob) randomizedEntity).setMegaMobIsPersistenceRequired(false);
+                }
+            }
+        }
+    }
+
 }

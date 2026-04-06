@@ -35,8 +35,9 @@ public class RequestGameRulesSyncC2SPacket {
                     level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS),
                     level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS),
                     level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS),
-                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS)), player);
-
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
+                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)), player);
         });
         return true;
     }

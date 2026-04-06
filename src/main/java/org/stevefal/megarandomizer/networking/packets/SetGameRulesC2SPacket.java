@@ -17,8 +17,20 @@ public class SetGameRulesC2SPacket {
     private final boolean isExcludeSpawnEggs;
     private final boolean isExcludeHeads;
     private final boolean isDoVolatileDrops;
+    private final boolean isDoRandomSpawns;
+    private final boolean isExcludeBosses;
 
-    public SetGameRulesC2SPacket(boolean isDoBlocks, boolean isDoEntities, boolean isDoPlayer, boolean isExcludeCreativeItems, boolean isExcludeSpawnEggs, boolean isExcludeHeads, boolean isDoVolatileDrops) {
+    public SetGameRulesC2SPacket(
+            boolean isDoBlocks,
+            boolean isDoEntities,
+            boolean isDoPlayer,
+            boolean isExcludeCreativeItems,
+            boolean isExcludeSpawnEggs,
+            boolean isExcludeHeads,
+            boolean isDoVolatileDrops,
+            boolean isDoRandomSpawns,
+            boolean isExcludeBosses
+    ) {
         this.isDoBlockRandomDrops = isDoBlocks;
         this.isDoEntityRandomDrops = isDoEntities;
         this.isDoPlayerRandomDrops = isDoPlayer;
@@ -26,6 +38,8 @@ public class SetGameRulesC2SPacket {
         this.isExcludeSpawnEggs = isExcludeSpawnEggs;
         this.isExcludeHeads = isExcludeHeads;
         this.isDoVolatileDrops = isDoVolatileDrops;
+        this.isDoRandomSpawns = isDoRandomSpawns;
+        this.isExcludeBosses = isExcludeBosses;
     }
 
     public SetGameRulesC2SPacket(FriendlyByteBuf buf) {
@@ -36,6 +50,8 @@ public class SetGameRulesC2SPacket {
         this.isExcludeSpawnEggs = buf.readBoolean();
         this.isExcludeHeads = buf.readBoolean();
         this.isDoVolatileDrops = buf.readBoolean();
+        this.isDoRandomSpawns = buf.readBoolean();
+        this.isExcludeBosses = buf.readBoolean();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -46,6 +62,8 @@ public class SetGameRulesC2SPacket {
         buf.writeBoolean(isExcludeSpawnEggs);
         buf.writeBoolean(isExcludeHeads);
         buf.writeBoolean(isDoVolatileDrops);
+        buf.writeBoolean(isDoRandomSpawns);
+        buf.writeBoolean(isExcludeBosses);
     }
 
 
@@ -63,11 +81,21 @@ public class SetGameRulesC2SPacket {
             level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS).set(isExcludeSpawnEggs, level.getServer());
             level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_HEADS).set(isExcludeHeads, level.getServer());
             level.getGameRules().getRule(MegaGameRules.RULE_DO_VOLATILE_DROPS).set(isDoVolatileDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_RANDOM_SPAWNS).set(isDoRandomSpawns, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_BOSSES).set(isExcludeBosses, level.getServer());
 
             // Sync the data back to the client
-            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(isDoBlockRandomDrops, isDoEntityRandomDrops, isDoPlayerRandomDrops, isExcludeCreativeItems, isExcludeSpawnEggs, isExcludeHeads, isDoVolatileDrops), player);
+            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(
+                    isDoBlockRandomDrops,
+                    isDoEntityRandomDrops,
+                    isDoPlayerRandomDrops,
+                    isExcludeCreativeItems,
+                    isExcludeSpawnEggs,
+                    isExcludeHeads,
+                    isDoVolatileDrops,
+                    isDoRandomSpawns,
+                    isExcludeBosses), player);
         });
         return true;
     }
-
 }
