@@ -16,8 +16,8 @@
   "menu.megarandomoptions.volatile_drops_off": "Volatile Drops: OFF",
   "menu.megarandomoptions.random_spawns_on": "Randomize Mob Spawns: ON",
   "menu.megarandomoptions.random_spawns_off": "Randomize Mob Spawns: OFF",
-  "menu.megarandomoptions.exclude_bosses_on": "Exclude boss randomization: ON",
-  "menu.megarandomoptions.exclude_bosses_off": "Exclude boss randomization: OFF",
+  "menu.megarandomoptions.exclude_bosses_on": "Exclude Boss Randomization: ON",
+  "menu.megarandomoptions.exclude_bosses_off": "Exclude Boss Randomization: OFF",
 
   "gamerule.doBlockRandomDrops": "Randomize drops from blocks",
   "gamerule.doEntityRandomDrops": "Randomize drops from mobs",

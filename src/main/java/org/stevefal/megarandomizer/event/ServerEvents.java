@@ -16,6 +16,7 @@ import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
+import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,9 @@ public class ServerEvents {
         final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS);
         final boolean excludeSpawnEggs = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS);
         final boolean excludeHeads = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDEHEADS);
+        final boolean excludeBosses = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES);
         RandomDrops.shuffleItems(worldData.worldGenOptions().seed(), excludeCreativeItems, excludeSpawnEggs, excludeHeads);
+        RandomSpawns.shuffleEntities(worldData.worldGenOptions().seed(), excludeBosses);
     }
 
     // Randomize entity drops
@@ -55,7 +58,8 @@ public class ServerEvents {
         ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
         event.getDrops().forEach(vanillaDrops -> {
             for (int i = 0; i < vanillaDrops.getItem().getCount(); i++) {
-                randomizedDrops.add(new ItemEntity(level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrops.getItem())));
+                randomizedDrops.add(new ItemEntity(level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrops.getItem(),
+                        level.getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS))));
             }
         });
         event.getDrops().clear();

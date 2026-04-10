@@ -12,6 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
+import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 import org.stevefal.megarandomizer.networking.packets.SetGameRulesC2SPacket;
 
@@ -197,8 +198,7 @@ public class MegaRandomOptionsScreen extends Screen {
         }).width(204).build(), 2);
 
         this.excludeBossesButton = gridlayout$rowhelper.addChild(Button.builder(getExcludeBossesComponent(), (button) -> {
-            // TODO: Add RandomSpawns.shuffleEntities
-
+            RandomSpawns.shuffleEntities(seed, !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES));
             MegaMessages.sendToServer(new SetGameRulesC2SPacket(level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
@@ -293,7 +293,6 @@ public class MegaRandomOptionsScreen extends Screen {
             return EXCLUDE_BOSSES_OFF;
         }
     }
-
 
 
     public void tick() {
