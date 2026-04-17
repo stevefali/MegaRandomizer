@@ -1,6 +1,7 @@
 package org.stevefal.megarandomizer.event;
 
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +18,7 @@ import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
+import org.stevefal.megarandomizer.megamobs.IMegaMob;
 import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 
 import java.util.ArrayList;
@@ -71,5 +74,30 @@ public class ServerEvents {
         new ReshuffleCommand(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public static void onVanillaMobSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        if (event.getEntity().getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS)) {
+
+            if (event.getSpawnType() != MobSpawnType.SPAWN_EGG) {
+                Entity vanillaEntity = event.getEntity();
+                ServerLevel level = event.getLevel().getLevel();
+
+                EntityType<?> randomizedEntityType = RandomSpawns.getRandomizedEntityType(vanillaEntity.getType());
+                Entity randomizedEntity = randomizedEntityType.create(level);
+
+                if (randomizedEntity != null) {
+                    event.setSpawnCancelled(true);
+                    vanillaEntity.discard();
+                    event.setCanceled(true);
+
+                    randomizedEntity.setPos(event.getX(), event.getY(), event.getZ());
+
+                    level.addFreshEntity(randomizedEntity);
+                    ((IMegaMob) randomizedEntity).setMegaMobIsPersistenceRequired(false);
+                }
+            }
+        }
     }
 }
