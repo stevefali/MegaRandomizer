@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "org.stevefal.megarandomizer.mixin",
+  "refmap": "megarandomizer.refmap.json",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "MobMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
