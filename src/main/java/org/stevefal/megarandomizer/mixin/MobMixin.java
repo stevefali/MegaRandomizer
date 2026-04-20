@@ -20,11 +20,13 @@ public abstract class MobMixin implements IMegaMob {
      */
     public MobCategory getClassification(boolean forSpawnCount) {
         Entity self = (Entity) (Object) this;
-        if (self.getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS)) {
-            if (forSpawnCount) {
-                // TODO: Return mobCategory of original vanilla mob
+        try {
+            if (forSpawnCount &&
+                    self.getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS)) {
                 return RandomSpawns.getVanillaEntityType(self.getType()).getCategory();
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         return self.getType().getCategory();
     }

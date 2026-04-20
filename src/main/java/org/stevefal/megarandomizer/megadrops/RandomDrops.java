@@ -14,7 +14,7 @@ public class RandomDrops {
     private static ArrayList<Item> shuffledList;
 
 
-    public static ItemStack getRandomizedItem(ItemStack vanillaItem, Boolean isDoVolatileDrops) {
+    public static ItemStack getRandomizedItem(ItemStack vanillaItem, boolean isDoVolatileDrops) {
         // First check if the list is null in case it isn't quite ready yet
         if (masterList != null) {
             int index;

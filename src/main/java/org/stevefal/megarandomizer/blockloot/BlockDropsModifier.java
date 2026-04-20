@@ -37,7 +37,7 @@ public class BlockDropsModifier extends LootModifier {
         GameRules gameRules = context.getLevel().getGameRules();
 
         if (gameRules.getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS)) {
-            Boolean isDoVolatile = gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS);
+            boolean isDoVolatile = gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS);
             // Replace the loot items
             ArrayList<ItemStack> randomizedLoot = new ArrayList<>();
             generatedLoot.forEach(vanillaLootItem -> {

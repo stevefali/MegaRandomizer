@@ -10,6 +10,7 @@ public class RandomSpawns {
 
     private static ArrayList<EntityType<?>> masterEntities;
     private static ArrayList<EntityType<?>> shuffledEntities;
+    private static Map<EntityType<?>, EntityType<?>> entityMap;
 
 
     public static EntityType<?> getRandomizedEntityType(EntityType<?> vanillaEntityType) {
@@ -44,19 +45,18 @@ public class RandomSpawns {
         shuffledEntities = new ArrayList<>(masterEntities);
         Collections.shuffle(shuffledEntities, new Random(gameSeed));
 
+        entityMap = new HashMap<>();
+        for (int i = 0; i < shuffledEntities.size(); i++) {
+            entityMap.put(shuffledEntities.get(i), masterEntities.get(i));
+        }
+
     }
 
     public static EntityType<?> getVanillaEntityType(EntityType<?> randomizedEntityType) {
-        if (shuffledEntities != null) {
-            int index = shuffledEntities.indexOf(randomizedEntityType);
-            if (index == -1) {
-                return randomizedEntityType;
-            } else {
-                return masterEntities.get(index);
-            }
-        } else {
-            return randomizedEntityType;
+        if (entityMap != null) {
+            return entityMap.getOrDefault(randomizedEntityType, randomizedEntityType);
         }
+        return randomizedEntityType;
     }
 
 
