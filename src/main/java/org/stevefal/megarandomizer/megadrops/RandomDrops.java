@@ -34,14 +34,14 @@ public class RandomDrops {
             if (index == -1) {
                 return vanillaItem;
             } else {
-                ItemStack randomizedDrop = shuffledList.get(index).getDefaultInstance();
+                Item randomizedDrop = shuffledList.get(index);
                 if (megaSavedData != null && !isDoVolatileDrops) {
                     megaSavedData.setDiscoveredDropIfNew(
-                            vanillaItem.getDisplayName().getString(),
-                            randomizedDrop.getDisplayName().getString()
+                            vanillaItem.getItem().getDescription().getString(),
+                            randomizedDrop.getDescription().getString()
                     );
                 }
-                return randomizedDrop;
+                return randomizedDrop.getDefaultInstance();
             }
         } else {
             return vanillaItem;
@@ -75,10 +75,6 @@ public class RandomDrops {
         }
         shuffledList = new ArrayList<>(masterList);
         Collections.shuffle(shuffledList, new Random(gameSeed));
-
-//        if (megaSavedData != null) {
-//            megaSavedData.clearDrops();
-//        }
     }
 
     public static final Item[] excludeItems = {

@@ -60,10 +60,6 @@ public class RandomSpawns {
         for (int i = 0; i < shuffledEntities.size(); i++) {
             entityMap.put(shuffledEntities.get(i), masterEntities.get(i));
         }
-
-//        if (megaSavedData != null) {
-//            megaSavedData.clearSpawns();
-//        }
     }
 
     public static EntityType<?> getVanillaEntityType(EntityType<?> randomizedEntityType) {

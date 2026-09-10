@@ -35,7 +35,7 @@ public class MegaSavedData extends SavedData {
         }
 
         for (String key : spawnsTag.getAllKeys()) {
-            data.discoveredSpawns.put(key, dropsTag.getString(key));
+            data.discoveredSpawns.put(key, spawnsTag.getString(key));
         }
 
         return data;
@@ -92,6 +92,10 @@ public class MegaSavedData extends SavedData {
     }
 
     public Map<String, String> getDiscoveredSpawns() {
+//        String bat = discoveredSpawns.remove("Bat");
+//        if (bat != null) {
+//            setDirty();
+//        }
         return this.discoveredSpawns;
     }
 

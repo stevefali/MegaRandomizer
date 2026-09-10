@@ -9,6 +9,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.stevefal.megarandomizer.megadata.clientdata.MegaTrackerClientData;
+
+import java.util.Map;
 
 
 @OnlyIn(Dist.CLIENT)
@@ -16,7 +19,9 @@ public class MegaTrackerScreen extends Screen {
 
     private StringWidget leftHeader;
     private StringWidget rightHeader;
-    private MegaTrackerList megaTrackerListLeft;
+    private StringWidget volatileWarningWidget;
+    private StringWidget loadingWidget;
+    private MegaTrackerList megaTrackerList;
     private Button doneButton;
     private Button modeButton;
     private boolean dropsMode = true;
@@ -25,10 +30,15 @@ public class MegaTrackerScreen extends Screen {
     private static final int ITEM_HEIGHT = 20;
     private static final int BUTTON_WIDTH_HALF = 98;
 
-    private static Component VANILLA_SOURCE = Component.literal("Vanilla Drop");
-    private static Component VANILLA_MOB = Component.literal("Vanilla Mob");
-    private static Component RANDOMIZED_DROP = Component.literal("Randomized Drop");
-    private static Component RANDOMIZED_MOB = Component.literal("Randomized Mob");
+    private static final Component VANILLA_DROP = Component.literal("Vanilla Drop").withStyle(ChatFormatting.BOLD);
+    private static final Component VANILLA_MOB = Component.literal("Vanilla Mob").withStyle(ChatFormatting.BOLD);
+    private static final Component RANDOMIZED_DROP = Component.literal("Randomized Drop").withStyle(ChatFormatting.BOLD);
+    private static final Component RANDOMIZED_MOB = Component.literal("Randomized Mob").withStyle(ChatFormatting.BOLD);
+    private static final Component SHOW_MOBS = Component.literal("Show Mobs");
+    private static final Component SHOW_DROPS = Component.literal("Show Drops");
+    private static final Component VOLATILE_WARNING = Component.literal("Warning: 'doVolatileDrops' is True").withStyle(
+            ChatFormatting.RED);
+    private static final Component LOADING = Component.literal("Loading...");
 
 
     protected MegaTrackerScreen(Component pTitle) {
@@ -36,20 +46,32 @@ public class MegaTrackerScreen extends Screen {
     }
 
     protected void init() {
+        this.megaTrackerList = new MegaTrackerList(
+                this.minecraft,
+                this.width,
+                this.height,
+                ITEM_HEIGHT,
+                this.height - 28,
+                ITEM_HEIGHT
+        );
+
+        this.volatileWarningWidget = new StringWidget(VOLATILE_WARNING, this.font);
+        this.loadingWidget = new StringWidget(LOADING, this.font);
+
+        volatileWarningWidget.setPosition(this.width / 2 - (this.font.width(VOLATILE_WARNING) / 2), 6);
+        loadingWidget.setPosition(this.width / 2 - (this.font.width(LOADING) / 2), this.height / 2);
+
         setupTrackerScreen();
     }
 
     private void setupTrackerScreen() {
-//        GridLayout gridlayout = new GridLayout();
-//        gridlayout.defaultCellSetting().padding(4, 4, 4, 2);
-//        GridLayout.RowHelper gridlayoutRowHelper = gridlayout.createRowHelper(1);
+        this.addRenderableWidget(this.megaTrackerList);
+        renderList();
 
-//        System.out.println("****** longest width: " + this.font.width("Cracked Polished Blackstone Bricks "));
-//        System.out.println("****** ➡ width: " + this.font.width("➡ "));
         this.leftHeader = new StringWidget(getLeftHeaderComponent(), this.font);
         this.rightHeader = new StringWidget(getRightHeaderComponent(), this.font);
 
-        int rightHeaderWidth = this.font.width("Randomized Drop");
+        int rightHeaderWidth = this.font.width(getRightHeaderComponent());
 
         this.addRenderableWidget(leftHeader);
         this.addRenderableWidget(rightHeader);
@@ -57,75 +79,6 @@ public class MegaTrackerScreen extends Screen {
         leftHeader.setPosition(24, 6);
         rightHeader.setPosition(width - rightHeaderWidth - 24, 6);
 
-        this.megaTrackerListLeft = new MegaTrackerList(
-                this.minecraft,
-                this.width,
-                this.height,
-//                32,
-                ITEM_HEIGHT,
-//                this.height - 36,
-                this.height - 28,
-                ITEM_HEIGHT
-        );
-
-        this.megaTrackerListLeft.addMegaTrackerEntry(
-                new MegaTrackerEntry(
-                        Component.literal("Grass Block"),
-                        Component.literal("Dirt block"),
-                        this.font,
-                        this.width
-                )
-        );
-
-        this.megaTrackerListLeft.addMegaTrackerEntry(
-                new MegaTrackerEntry(
-                        Component.literal("Cracked Polished Blackstone Bricks"),
-                        Component.literal("Dirt block"),
-                        this.font,
-                        this.width
-                )
-        );
-
-        this.megaTrackerListLeft.addMegaTrackerEntry(
-                new MegaTrackerEntry(
-                        Component.literal("Sand"),
-                        Component.literal("Cracked Polished Blackstone Bricks"),
-                        this.font,
-                        this.width
-                )
-        );
-
-        this.megaTrackerListLeft.addMegaTrackerEntry(
-                new MegaTrackerEntry(
-                        Component.literal("Cracked Polished Blackstone Bricks"),
-                        Component.literal("Cracked Polished Blackstone Bricks"),
-                        this.font,
-                        this.width
-                )
-        );
-
-
-        for (int i = 0; i < 30; i++) {
-
-            this.megaTrackerListLeft.addMegaTrackerEntry(
-//                    new MegaTrackerEntry(Component.literal("Grass Block  §a\u27A1  §rSome Drop"), this.font)
-                    new MegaTrackerEntry(
-                            Component.literal("Grass Block"),
-                            Component.literal("Dirt block"),
-                            this.font,
-                            this.width
-                    )
-            );
-
-//            this.stringWidget = gridlayoutRowHelper.addChild(new StringWidget(
-//                    Component.literal("Grass Block"),
-//                    this.font
-//            ), 1);
-
-        }
-
-
-        this.addRenderableWidget(this.megaTrackerListLeft);
 
         doneButton = Button.builder(
                 RETURN_TO_GAME, (button) -> {
@@ -138,41 +91,68 @@ public class MegaTrackerScreen extends Screen {
         doneButton.setPosition(this.width / 2 - 102, this.height - Button.DEFAULT_HEIGHT - 4);
 
         modeButton = Button.builder(
-                Component.literal("Tracker Mode"), button -> {
+                getModeButtonComponent(), button -> {
                     toggleDropsMode();
+                    renderList();
                 }
         ).width(BUTTON_WIDTH_HALF).build();
 
         this.addRenderableWidget(modeButton);
         modeButton.setPosition(this.width / 2 + 4, this.height - Button.DEFAULT_HEIGHT - 4);
 
-//        gridlayoutRowHelper.addChild(
-//                Button.builder(
-//                        RETURN_TO_GAME, (p_280814_) -> {
-//                            this.minecraft.setScreen((Screen) null);
-//                            this.minecraft.mouseHandler.grabMouse();
-//                        }
-//                ).width(204).build(), 2, gridlayout.newCellSettings().paddingTop(50)
-//        );
+    }
 
 
-//        gridlayout.arrangeElements();
-//        FrameLayout.alignInRectangle(gridlayout, 0, 0, this.width, this.height, 0.5F, 0.25F);
-//        gridlayout.visitWidgets(this::addRenderableWidget);
+    private void renderList() {
+
+        this.megaTrackerList.clearMegaTrackerEntries();
+        this.removeWidget(volatileWarningWidget);
+
+        if (getListData().isEmpty()) {
+            this.addRenderableWidget(loadingWidget);
+        } else {
+
+            this.removeWidget(loadingWidget);
+            if (this.dropsMode && MegaTrackerClientData.getIsDoVolatile()) {
+                this.addRenderableWidget(volatileWarningWidget);
+            }
+
+            for (Map.Entry<String, String> entry : getListData().entrySet()) {
+                this.megaTrackerList.addMegaTrackerEntry(
+                        new MegaTrackerEntry(
+                                Component.literal(entry.getKey()),
+                                Component.literal(entry.getValue()),
+                                this.font,
+                                this.width
+                        )
+                );
+            }
+
+        }
     }
 
     private Component getLeftHeaderComponent() {
-        return dropsMode ? VANILLA_SOURCE : VANILLA_MOB;
+        return dropsMode ? VANILLA_DROP : VANILLA_MOB;
     }
 
     private Component getRightHeaderComponent() {
         return dropsMode ? RANDOMIZED_DROP : RANDOMIZED_MOB;
     }
 
+    private Component getModeButtonComponent() {
+        return dropsMode ? SHOW_MOBS : SHOW_DROPS;
+    }
+
+    private Map<String, String> getListData() {
+        return this.dropsMode ? MegaTrackerClientData.getDiscoveredDrops() : MegaTrackerClientData.getDiscoveredSpawns();
+    }
+
     @Override
     public void tick() {
         leftHeader.setMessage(getLeftHeaderComponent());
         rightHeader.setMessage(getRightHeaderComponent());
+        modeButton.setMessage(getModeButtonComponent());
+        renderList();
         super.tick();
     }
 
@@ -196,6 +176,10 @@ public class MegaTrackerScreen extends Screen {
 
         public void addMegaTrackerEntry(MegaTrackerEntry megaTrackerEntry) {
             this.addEntry(megaTrackerEntry);
+        }
+
+        public void clearMegaTrackerEntries() {
+            this.clearEntries();
         }
 
         @Override
