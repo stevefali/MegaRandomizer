@@ -6,7 +6,8 @@ import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
 import org.stevefal.megarandomizer.networking.MegaMessages;
-import org.stevefal.megarandomizer.networking.packets.RequestGameRulesSyncC2SPacket;
+import org.stevefal.megarandomizer.networking.packets.toserver.RequestGameRulesSyncC2SPacket;
+import org.stevefal.megarandomizer.networking.packets.toserver.RequestTrackerDataSyncC2SPacket;
 
 
 public class ModPauseScreen extends PauseScreen {
@@ -59,7 +60,6 @@ public class ModPauseScreen extends PauseScreen {
             });
 
 
-
 //            if (modGridLayout != null) {
 //                System.out.println("Using grid layout!");
 //                GridLayout.RowHelper modRowHelper = modGridLayout.createRowHelper(2);
@@ -97,20 +97,25 @@ public class ModPauseScreen extends PauseScreen {
             megaTrackerButton.setPosition(this.width / 2 -102 + (BUTTON_WIDTH_FULL / 2) + 8, this.height / 4 + 120 + 3);*/
 
 
-            Button megaRandomButton = Button.builder(MEGA_RANDOMIZER_MENU, (button) -> {
-                MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
-                minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
-            }).width(BUTTON_WIDTH_FULL).build();
+            Button megaRandomButton = Button.builder(
+                    MEGA_RANDOMIZER_MENU, (button) -> {
+                        MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
+                        minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
+                    }
+            ).width(BUTTON_WIDTH_FULL).build();
 
             this.addRenderableWidget(megaRandomButton);
             megaRandomButton.setPosition(this.width / 2 - 102, this.height / 4 + 96 + 3);
 
-            Button megaTrackerButton = Button.builder(Component.literal("Mega Randomizer Tracker"), (button) -> {
-                minecraft.setScreen(new MegaTrackerScreen(Component.literal("Item Drops tracker")));
-            }).width(BUTTON_WIDTH_FULL).build();
+            Button megaTrackerButton = Button.builder(
+                    Component.literal("Mega Randomizer Tracker"), (button) -> {
+                        MegaMessages.sendToServer(new RequestTrackerDataSyncC2SPacket());
+                        minecraft.setScreen(new MegaTrackerScreen(Component.literal("Item Drops tracker")));
+                    }
+            ).width(BUTTON_WIDTH_FULL).build();
 
             this.addRenderableWidget(megaTrackerButton);
-            megaTrackerButton.setPosition(this.width / 2 -102, this.height / 4 + 120 + 3);
+            megaTrackerButton.setPosition(this.width / 2 - 102, this.height / 4 + 120 + 3);
 
         }
     }

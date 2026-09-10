@@ -4,6 +4,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.stevefal.megarandomizer.megadata.MegaSavedData;
+import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 
 import java.util.*;
 
@@ -12,6 +14,8 @@ public class RandomDrops {
     private static ArrayList<Item> masterList;
 
     private static ArrayList<Item> shuffledList;
+
+    private static MegaSavedData megaSavedData;
 
 
     public static ItemStack getRandomizedItem(ItemStack vanillaItem, boolean isDoVolatileDrops) {
@@ -30,7 +34,14 @@ public class RandomDrops {
             if (index == -1) {
                 return vanillaItem;
             } else {
-                return shuffledList.get(index).getDefaultInstance();
+                ItemStack randomizedDrop = shuffledList.get(index).getDefaultInstance();
+                if (megaSavedData != null && !isDoVolatileDrops) {
+                    megaSavedData.setDiscoveredDropIfNew(
+                            vanillaItem.getDisplayName().getString(),
+                            randomizedDrop.getDisplayName().getString()
+                    );
+                }
+                return randomizedDrop;
             }
         } else {
             return vanillaItem;
@@ -38,7 +49,13 @@ public class RandomDrops {
     }
 
     // This is called when the items should get shuffled
-    public static void shuffleItems(long gameSeed, boolean doExcludeCreativeItems, boolean doExcludeSpawnEggs, boolean doExcludeHeads) {
+    public static void shuffleItems(
+            long gameSeed,
+            boolean doExcludeCreativeItems,
+            boolean doExcludeSpawnEggs,
+            boolean doExcludeHeads) {
+        megaSavedData = MegaSavedDataAccess.getMegaSavedData();
+
         ArrayList<Item> copiedList = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
 
         masterList = new ArrayList<>(copiedList);
@@ -58,6 +75,10 @@ public class RandomDrops {
         }
         shuffledList = new ArrayList<>(masterList);
         Collections.shuffle(shuffledList, new Random(gameSeed));
+
+//        if (megaSavedData != null) {
+//            megaSavedData.clearDrops();
+//        }
     }
 
     public static final Item[] excludeItems = {

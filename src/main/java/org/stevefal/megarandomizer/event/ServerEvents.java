@@ -1,32 +1,28 @@
 package org.stevefal.megarandomizer.event;
 
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.WorldData;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
-import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.command.ConfigCommand;
 import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
+import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import org.stevefal.megarandomizer.megamobs.IMegaMob;
 import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Mod.EventBusSubscriber(modid = MegaRandomizer.MODID)
 public class ServerEvents {
@@ -34,6 +30,8 @@ public class ServerEvents {
     // Setup and Shuffle the drops list when the server is ready
     @SubscribeEvent
     public static void onServerReady(ServerStartedEvent event) {
+        MegaSavedDataAccess.initializeMegaSavedData(event.getServer());
+
         final WorldData worldData = event.getServer().getWorldData();
         final GameRules gameRules = worldData.getGameRules();
         final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS);

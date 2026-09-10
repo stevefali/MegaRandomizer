@@ -10,8 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.lang.management.BufferPoolMXBean;
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class MegaTrackerScreen extends Screen {
@@ -26,6 +24,11 @@ public class MegaTrackerScreen extends Screen {
     private static final Component RETURN_TO_GAME = Component.translatable("menu.returnToGame");
     private static final int ITEM_HEIGHT = 20;
     private static final int BUTTON_WIDTH_HALF = 98;
+
+    private static Component VANILLA_SOURCE = Component.literal("Vanilla Drop");
+    private static Component VANILLA_MOB = Component.literal("Vanilla Mob");
+    private static Component RANDOMIZED_DROP = Component.literal("Randomized Drop");
+    private static Component RANDOMIZED_MOB = Component.literal("Randomized Mob");
 
 
     protected MegaTrackerScreen(Component pTitle) {
@@ -43,16 +46,16 @@ public class MegaTrackerScreen extends Screen {
 
 //        System.out.println("****** longest width: " + this.font.width("Cracked Polished Blackstone Bricks "));
 //        System.out.println("****** ➡ width: " + this.font.width("➡ "));
-        this.leftHeader = new StringWidget(Component.literal("Source"), this.font);
-        this.rightHeader = new StringWidget(Component.literal("Randomized Drop"), this.font);
+        this.leftHeader = new StringWidget(getLeftHeaderComponent(), this.font);
+        this.rightHeader = new StringWidget(getRightHeaderComponent(), this.font);
 
         int rightHeaderWidth = this.font.width("Randomized Drop");
 
         this.addRenderableWidget(leftHeader);
         this.addRenderableWidget(rightHeader);
 
-        leftHeader.setPosition(24, 4);
-        rightHeader.setPosition(width - rightHeaderWidth - 24, 4);
+        leftHeader.setPosition(24, 6);
+        rightHeader.setPosition(width - rightHeaderWidth - 24, 6);
 
         this.megaTrackerListLeft = new MegaTrackerList(
                 this.minecraft,
@@ -140,6 +143,8 @@ public class MegaTrackerScreen extends Screen {
                 }
         ).width(BUTTON_WIDTH_HALF).build();
 
+        this.addRenderableWidget(modeButton);
+        modeButton.setPosition(this.width / 2 + 4, this.height - Button.DEFAULT_HEIGHT - 4);
 
 //        gridlayoutRowHelper.addChild(
 //                Button.builder(
@@ -154,6 +159,21 @@ public class MegaTrackerScreen extends Screen {
 //        gridlayout.arrangeElements();
 //        FrameLayout.alignInRectangle(gridlayout, 0, 0, this.width, this.height, 0.5F, 0.25F);
 //        gridlayout.visitWidgets(this::addRenderableWidget);
+    }
+
+    private Component getLeftHeaderComponent() {
+        return dropsMode ? VANILLA_SOURCE : VANILLA_MOB;
+    }
+
+    private Component getRightHeaderComponent() {
+        return dropsMode ? RANDOMIZED_DROP : RANDOMIZED_MOB;
+    }
+
+    @Override
+    public void tick() {
+        leftHeader.setMessage(getLeftHeaderComponent());
+        rightHeader.setMessage(getRightHeaderComponent());
+        super.tick();
     }
 
     @Override
@@ -185,7 +205,6 @@ public class MegaTrackerScreen extends Screen {
 
         @Override
         protected int getScrollbarPosition() {
-//            return this.width / 2 + this.getRowWidth() / 2;
             return this.width - 8;
         }
 
@@ -201,7 +220,6 @@ public class MegaTrackerScreen extends Screen {
         private final int parentWidth;
 
         public MegaTrackerEntry(Component queryText, Component resultText, Font entryFont, int parentWidth) {
-//        public MegaTrackerEntry(Component queryText, Font entryFont) {
             this.queryText = queryText;
             this.resultText = resultText;
             this.entryFont = entryFont;
@@ -224,29 +242,20 @@ public class MegaTrackerScreen extends Screen {
 
             int textY = top + (height - 9) / 2;
             int queryTextX = left + 4;
-            int arrowX = (width / 2) - 6;
+            int arrowX = (parentWidth / 2) - 4;
             int resultTextWidth = entryFont.width(resultText.getString());
             int resultTextX = left + width - resultTextWidth - 14;
-//            int resultTextX = arrowX + 12;
-
 
             if (hovering) {
-//                guiGraphics.fill(left, top, left + width, top + height, 0x26FFFFFF);
                 guiGraphics.fill(0, top, parentWidth, top + height, 0x26FFFFFF);
             }
             if (index % 2 == 1) {
-//                guiGraphics.fill(left, top, left + width, top + height, 0x44000000);
-//                guiGraphics.fill(left, top, left + width, top + height, 0x10FFFFFF);
                 guiGraphics.fill(0, top, parentWidth, top + height, 0x10FFFFFF);
-            } /*else {
-                guiGraphics.fill(left, top, left + width, top + height, 0x10FFFFFF);
             }
-*/
 
             guiGraphics.drawString(entryFont, this.queryText, queryTextX, textY, 0xFFFFFF);
             guiGraphics.drawString(entryFont, this.arrow, arrowX, textY, 0xFFFFFF);
             guiGraphics.drawString(entryFont, this.resultText, resultTextX, textY, 0xFFFFFF);
-
         }
 
         @Override

@@ -7,9 +7,11 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import org.stevefal.megarandomizer.MegaRandomizer;
-import org.stevefal.megarandomizer.networking.packets.GameRulesSyncS2CPacket;
-import org.stevefal.megarandomizer.networking.packets.RequestGameRulesSyncC2SPacket;
-import org.stevefal.megarandomizer.networking.packets.SetGameRulesC2SPacket;
+import org.stevefal.megarandomizer.networking.packets.toclient.GameRulesSyncS2CPacket;
+import org.stevefal.megarandomizer.networking.packets.toclient.TrackerClearDropsS2CPacket;
+import org.stevefal.megarandomizer.networking.packets.toclient.TrackerClearSpawnsS2CPacket;
+import org.stevefal.megarandomizer.networking.packets.toclient.TrackerDataSyncS2CPacket;
+import org.stevefal.megarandomizer.networking.packets.toserver.*;
 
 public class MegaMessages {
 
@@ -42,11 +44,48 @@ public class MegaMessages {
                 .consumerMainThread(SetGameRulesC2SPacket::handle)
                 .add();
 
+        netReg.messageBuilder(RequestTrackerDataSyncC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(RequestTrackerDataSyncC2SPacket::new)
+                .encoder(RequestTrackerDataSyncC2SPacket::toBytes)
+                .consumerMainThread(RequestTrackerDataSyncC2SPacket::handle)
+                .add();
+
+        netReg.messageBuilder(TrackerClearDropsC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(TrackerClearDropsC2SPacket::new)
+                .encoder(TrackerClearDropsC2SPacket::toBytes)
+                .consumerMainThread(TrackerClearDropsC2SPacket::handle)
+                .add();
+
+        netReg.messageBuilder(TrackerClearSpawnsC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(TrackerClearSpawnsC2SPacket::new)
+                .encoder(TrackerClearSpawnsC2SPacket::toBytes)
+                .consumerMainThread(TrackerClearSpawnsC2SPacket::handle)
+                .add();
+
+
         /* To Client */
         netReg.messageBuilder(GameRulesSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(GameRulesSyncS2CPacket::new)
                 .encoder(GameRulesSyncS2CPacket::toBytes)
                 .consumerMainThread(GameRulesSyncS2CPacket::handle)
+                .add();
+
+        netReg.messageBuilder(TrackerDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(TrackerDataSyncS2CPacket::new)
+                .encoder(TrackerDataSyncS2CPacket::toBytes)
+                .consumerMainThread(TrackerDataSyncS2CPacket::handle)
+                .add();
+
+        netReg.messageBuilder(TrackerClearDropsS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(TrackerClearDropsS2CPacket::new)
+                .encoder(TrackerClearDropsS2CPacket::toBytes)
+                .consumerMainThread(TrackerClearDropsS2CPacket::handle)
+                .add();
+
+        netReg.messageBuilder(TrackerClearSpawnsS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(TrackerClearSpawnsS2CPacket::new)
+                .encoder(TrackerClearSpawnsS2CPacket::toBytes)
+                .consumerMainThread(TrackerClearSpawnsS2CPacket::handle)
                 .add();
     }
 
