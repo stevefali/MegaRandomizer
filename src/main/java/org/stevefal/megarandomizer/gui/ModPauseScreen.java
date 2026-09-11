@@ -13,7 +13,6 @@ import org.stevefal.megarandomizer.networking.packets.toserver.RequestTrackerDat
 public class ModPauseScreen extends PauseScreen {
 
     private static final int BUTTON_WIDTH_FULL = 204;
-    private static final int BUTTON_WIDTH_HALF = 98;
     private static final Component MEGA_RANDOMIZER_MENU = Component.translatable("menu.megarandomoptions");
     private final boolean showPauseMenu;
     private final boolean isSinglePlayer;
@@ -42,7 +41,6 @@ public class ModPauseScreen extends PauseScreen {
             this.renderables.forEach(renderable -> {
                 if (renderable instanceof Button) {
                     if (((Button) renderable).getMessage().equals(Component.translatable("menu.returnToMenu"))) {
-//                        ((Button) renderable).setY(this.height / 4 + 168 + 3);
                         ((Button) renderable).setY(this.height / 4 + 144 + 3);
                     } else {
                         ((Button) renderable).setY(((Button) renderable).getY() - 24);
@@ -54,48 +52,7 @@ public class ModPauseScreen extends PauseScreen {
                         }
                     }
                 }
-//                if (renderable instanceof GridLayout grid) {
-//                    modGridLayout = grid;
-//                }
             });
-
-
-//            if (modGridLayout != null) {
-//                System.out.println("Using grid layout!");
-//                GridLayout.RowHelper modRowHelper = modGridLayout.createRowHelper(2);
-//                Button megaRandomButton = modRowHelper.addChild(Button.builder(MEGA_RANDOMIZER_MENU, (button) -> {
-//                    MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
-//                    minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
-//                }).width(BUTTON_WIDTH_FULL).build(), 1);
-//
-//                this.addRenderableWidget(megaRandomButton);
-//                megaRandomButton.setY(this.height / 4 + 120 + 3);
-//
-//                Button megaTrackerButton = modRowHelper.addChild(Button.builder(Component.literal("Mega Randomizer Tracker"), (button) -> {
-//                    minecraft.setScreen(new MegaTrackerScreen(Component.literal("Item Drops tracker")));
-//                }).width(BUTTON_WIDTH_FULL).build(), 1);
-//
-//                megaTrackerButton.setY(this.height / 4 + 120 + 3);
-//
-//                modGridLayout.arrangeElements();
-//
-//            }
-
-            /*Button megaRandomButton = Button.builder(MEGA_RANDOMIZER_MENU, (button) -> {
-                MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
-                minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
-            }).width(BUTTON_WIDTH_HALF).build();
-
-            this.addRenderableWidget(megaRandomButton);
-            megaRandomButton.setPosition(this.width / 2 - 102, this.height / 4 + 120 + 3);
-
-            Button megaTrackerButton = Button.builder(Component.literal("Mega Randomizer Tracker"), (button) -> {
-                minecraft.setScreen(new MegaTrackerScreen(Component.literal("Item Drops tracker")));
-            }).width(BUTTON_WIDTH_HALF).build();
-
-            this.addRenderableWidget(megaTrackerButton);
-            megaTrackerButton.setPosition(this.width / 2 -102 + (BUTTON_WIDTH_FULL / 2) + 8, this.height / 4 + 120 + 3);*/
-
 
             Button megaRandomButton = Button.builder(
                     MEGA_RANDOMIZER_MENU, (button) -> {
@@ -108,9 +65,9 @@ public class ModPauseScreen extends PauseScreen {
             megaRandomButton.setPosition(this.width / 2 - 102, this.height / 4 + 96 + 3);
 
             Button megaTrackerButton = Button.builder(
-                    Component.literal("Mega Randomizer Tracker"), (button) -> {
+                    Component.translatable("menu.megatracker"), (button) -> {
                         MegaMessages.sendToServer(new RequestTrackerDataSyncC2SPacket());
-                        minecraft.setScreen(new MegaTrackerScreen(Component.literal("Item Drops tracker")));
+                        minecraft.setScreen(new MegaTrackerScreen());
                     }
             ).width(BUTTON_WIDTH_FULL).build();
 

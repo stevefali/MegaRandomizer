@@ -11,12 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
-import org.stevefal.megarandomizer.megadrops.RandomDrops;
-import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 import org.stevefal.megarandomizer.networking.packets.toserver.SetGameRulesC2SPacket;
-import org.stevefal.megarandomizer.networking.packets.toserver.TrackerClearDropsC2SPacket;
-import org.stevefal.megarandomizer.networking.packets.toserver.TrackerClearSpawnsC2SPacket;
 
 @OnlyIn(Dist.CLIENT)
 public class MegaRandomOptionsScreen extends Screen {
@@ -154,12 +150,6 @@ public class MegaRandomOptionsScreen extends Screen {
         this.excludeCreativeButton = gridlayout$rowhelper.addChild(
                 Button.builder(
                         getCreativeComponent(), (button) -> {
-                            RandomDrops.shuffleItems(
-                                    seed,
-                                    !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS)
-                            );
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
@@ -171,7 +161,6 @@ public class MegaRandomOptionsScreen extends Screen {
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
                             ));
-                            MegaMessages.sendToServer(new TrackerClearDropsC2SPacket());
                         }
                 ).width(204).build(), 2
         );
@@ -179,12 +168,6 @@ public class MegaRandomOptionsScreen extends Screen {
         this.excludeSpawnEggsButton = gridlayout$rowhelper.addChild(
                 Button.builder(
                         getSpawnEggsComponent(), (button) -> {
-                            RandomDrops.shuffleItems(
-                                    seed,
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS)
-                            );
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
@@ -196,7 +179,6 @@ public class MegaRandomOptionsScreen extends Screen {
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
                             ));
-                            MegaMessages.sendToServer(new TrackerClearDropsC2SPacket());
                         }
                 ).width(204).build(), 2
         );
@@ -204,12 +186,6 @@ public class MegaRandomOptionsScreen extends Screen {
         this.excludeHeadsButton = gridlayout$rowhelper.addChild(
                 Button.builder(
                         getHeadsComponent(), (button) -> {
-                            RandomDrops.shuffleItems(
-                                    seed,
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS)
-                            );
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
@@ -221,7 +197,6 @@ public class MegaRandomOptionsScreen extends Screen {
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
                             ));
-                            MegaMessages.sendToServer(new TrackerClearDropsC2SPacket());
                         }
                 ).width(204).build(), 2
         );
@@ -265,10 +240,6 @@ public class MegaRandomOptionsScreen extends Screen {
         this.excludeBossesButton = gridlayout$rowhelper.addChild(
                 Button.builder(
                         getExcludeBossesComponent(), (button) -> {
-                            RandomSpawns.shuffleEntities(
-                                    seed,
-                                    !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
-                            );
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
@@ -280,7 +251,6 @@ public class MegaRandomOptionsScreen extends Screen {
                                     level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
                             ));
-                            MegaMessages.sendToServer(new TrackerClearSpawnsC2SPacket());
                         }
                 ).width(204).build(), 2
         );

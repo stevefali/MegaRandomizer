@@ -50,18 +50,6 @@ public class MegaMessages {
                 .consumerMainThread(RequestTrackerDataSyncC2SPacket::handle)
                 .add();
 
-        netReg.messageBuilder(TrackerClearDropsC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(TrackerClearDropsC2SPacket::new)
-                .encoder(TrackerClearDropsC2SPacket::toBytes)
-                .consumerMainThread(TrackerClearDropsC2SPacket::handle)
-                .add();
-
-        netReg.messageBuilder(TrackerClearSpawnsC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(TrackerClearSpawnsC2SPacket::new)
-                .encoder(TrackerClearSpawnsC2SPacket::toBytes)
-                .consumerMainThread(TrackerClearSpawnsC2SPacket::handle)
-                .add();
-
 
         /* To Client */
         netReg.messageBuilder(GameRulesSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)

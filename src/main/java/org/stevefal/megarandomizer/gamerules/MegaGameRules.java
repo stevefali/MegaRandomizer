@@ -1,6 +1,11 @@
 package org.stevefal.megarandomizer.gamerules;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.GameRules;
+import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
+import org.stevefal.megarandomizer.megadrops.RandomDrops;
+import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 
 public class MegaGameRules {
 
@@ -15,26 +20,119 @@ public class MegaGameRules {
     public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_BOSSES;
 
 
-
     public static void register() {
-        RULE_DOBLOCKRANDOMDROPS = GameRules.register("doBlockRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
 
-        RULE_DOENTITYRANDOMDROPS = GameRules.register("doEntityRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_DOBLOCKRANDOMDROPS = registerMegaRule(
+                "doBlockRandomDrops",
+                GameRules.Category.DROPS,
+                true,
+                MegaGameRuleType.NORMAL
+        );
 
-        RULE_DOPLAYERRANDOMDROPS = GameRules.register("doPlayerRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_DOENTITYRANDOMDROPS = registerMegaRule(
+                "doEntityRandomDrops",
+                GameRules.Category.DROPS,
+                true,
+                MegaGameRuleType.NORMAL
+        );
 
-        RULE_EXCLUDECREATIVEITEMS = GameRules.register("excludeCreativeItems", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_DOPLAYERRANDOMDROPS = registerMegaRule(
+                "doPlayerRandomDrops",
+                GameRules.Category.DROPS,
+                true,
+                MegaGameRuleType.NORMAL
+        );
 
-        RULE_EXCLUDESPAWNEGGS = GameRules.register("excludeSpawnEggs", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_EXCLUDECREATIVEITEMS = registerMegaRule(
+                "excludeCreativeItems",
+                GameRules.Category.DROPS,
+                true,
+                MegaGameRuleType.DROP_EXCLUSION
+        );
 
-        RULE_EXCLUDEHEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
+        RULE_EXCLUDESPAWNEGGS = registerMegaRule(
+                "excludeSpawnEggs",
+                GameRules.Category.DROPS,
+                true,
+                MegaGameRuleType.DROP_EXCLUSION
+        );
 
-        RULE_DO_VOLATILE_DROPS = GameRules.register("doVolatileDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
+        RULE_EXCLUDEHEADS = registerMegaRule(
+                "excludeHeads",
+                GameRules.Category.DROPS,
+                true,
+                MegaGameRuleType.DROP_EXCLUSION
+        );
 
-        RULE_DO_RANDOM_SPAWNS = GameRules.register("doRandomSpawns", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+        RULE_DO_VOLATILE_DROPS = registerMegaRule(
+                "doVolatileDrops",
+                GameRules.Category.DROPS,
+                false,
+                MegaGameRuleType.NORMAL
+        );
 
-        RULE_EXCLUDE_BOSSES = GameRules.register("excludeBosses", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+        RULE_DO_RANDOM_SPAWNS = registerMegaRule(
+                "doRandomSpawns",
+                GameRules.Category.SPAWNING,
+                true,
+                MegaGameRuleType.NORMAL
+        );
 
+        RULE_EXCLUDE_BOSSES = registerMegaRule(
+                "excludeBosses",
+                GameRules.Category.SPAWNING,
+                true,
+                MegaGameRuleType.MOB_EXCLUSION
+        );
+
+    }
+
+    private static GameRules.Key<GameRules.BooleanValue> registerMegaRule(
+            String name,
+            GameRules.Category category,
+            boolean defaultValue,
+            MegaGameRuleType megaGameRuleType) {
+
+        return GameRules.register(
+                name,
+                category,
+                GameRules.BooleanValue.create(
+                        defaultValue, ((minecraftServer, booleanValue) -> {
+                            onMegaRuleChanged(minecraftServer, booleanValue, name, megaGameRuleType);
+                        })
+                )
+        );
+    }
+
+    private static void onMegaRuleChanged(
+            MinecraftServer minecraftServer,
+            GameRules.BooleanValue value,
+            String name,
+            MegaGameRuleType megaGameRuleType) {
+
+        minecraftServer.sendSystemMessage(Component.literal("MegaGameRule " + name + " set to " + value.get()));
+        if (megaGameRuleType == MegaGameRuleType.DROP_EXCLUSION) {
+            RandomDrops.shuffleItems(
+                    minecraftServer.getWorldData().worldGenOptions().seed(),
+                    minecraftServer.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
+                    minecraftServer.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
+                    minecraftServer.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS)
+            );
+            MegaSavedDataAccess.getMegaSavedData().clearDrops();
+
+        } else if (megaGameRuleType == MegaGameRuleType.MOB_EXCLUSION) {
+            RandomSpawns.shuffleEntities(
+                    minecraftServer.getWorldData().worldGenOptions().seed(),
+                    minecraftServer.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+            );
+            MegaSavedDataAccess.getMegaSavedData().clearSpawns();
+        }
+    }
+
+    enum MegaGameRuleType {
+        NORMAL,
+        DROP_EXCLUSION,
+        MOB_EXCLUSION
     }
 
 }

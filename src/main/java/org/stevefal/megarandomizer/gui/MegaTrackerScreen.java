@@ -30,19 +30,23 @@ public class MegaTrackerScreen extends Screen {
     private static final int ITEM_HEIGHT = 20;
     private static final int BUTTON_WIDTH_HALF = 98;
 
-    private static final Component VANILLA_DROP = Component.literal("Vanilla Drop").withStyle(ChatFormatting.BOLD);
-    private static final Component VANILLA_MOB = Component.literal("Vanilla Mob").withStyle(ChatFormatting.BOLD);
-    private static final Component RANDOMIZED_DROP = Component.literal("Randomized Drop").withStyle(ChatFormatting.BOLD);
-    private static final Component RANDOMIZED_MOB = Component.literal("Randomized Mob").withStyle(ChatFormatting.BOLD);
-    private static final Component SHOW_MOBS = Component.literal("Show Mobs");
-    private static final Component SHOW_DROPS = Component.literal("Show Drops");
-    private static final Component VOLATILE_WARNING = Component.literal("Warning: 'doVolatileDrops' is True").withStyle(
+    private static final Component VANILLA_DROP = Component.translatable("menu.megatracker.vanilla_drop").withStyle(
+            ChatFormatting.BOLD);
+    private static final Component VANILLA_MOB = Component.translatable("menu.megatracker.vanilla_mob").withStyle(
+            ChatFormatting.BOLD);
+    private static final Component RANDOMIZED_DROP = Component.translatable("menu.megatracker.randomized_drop").withStyle(
+            ChatFormatting.BOLD);
+    private static final Component RANDOMIZED_MOB = Component.translatable("menu.megatracker.randomized_mob").withStyle(
+            ChatFormatting.BOLD);
+    private static final Component SHOW_MOBS = Component.translatable("menu.megatracker.show_mobs");
+    private static final Component SHOW_DROPS = Component.translatable("menu.megatracker.show_drops");
+    private static final Component VOLATILE_WARNING = Component.translatable("menu.megatracker.volatile_warning").withStyle(
             ChatFormatting.RED);
-    private static final Component LOADING = Component.literal("Loading...");
+    private static final Component LOADING = Component.translatable("menu.megatracker.loading");
 
 
-    protected MegaTrackerScreen(Component pTitle) {
-        super(pTitle);
+    public MegaTrackerScreen() {
+        super(Component.translatable("menu.megatracker"));
     }
 
     protected void init() {
@@ -94,6 +98,7 @@ public class MegaTrackerScreen extends Screen {
                 getModeButtonComponent(), button -> {
                     toggleDropsMode();
                     renderList();
+                    megaTrackerList.setScrollAmount(0);
                 }
         ).width(BUTTON_WIDTH_HALF).build();
 
@@ -191,7 +196,6 @@ public class MegaTrackerScreen extends Screen {
         protected int getScrollbarPosition() {
             return this.width - 8;
         }
-
     }
 
 
