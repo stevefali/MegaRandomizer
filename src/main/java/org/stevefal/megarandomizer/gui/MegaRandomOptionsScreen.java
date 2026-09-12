@@ -37,9 +37,7 @@ public class MegaRandomOptionsScreen extends Screen {
     private Button randomSpawnsButton;
     private Button excludeBossesButton;
 
-
     private final boolean showMegaRandomOptions;
-    private final long seed;
 
     private static final Component ENTITY_DROPS_ON = Component.translatable("menu.megarandomoptions.entity_drops_on");
     private static final Component ENTITY_DROPS_OFF = Component.translatable("menu.megarandomoptions.entity_drops_off");
@@ -70,13 +68,12 @@ public class MegaRandomOptionsScreen extends Screen {
     private static final Component DONE = Component.literal("Done");
 
 
-    public MegaRandomOptionsScreen(Screen lastScreen, Level level, boolean showMegaRandomOptions, long seed) {
+    public MegaRandomOptionsScreen(Screen lastScreen, Level level, boolean showMegaRandomOptions) {
         super(Component.translatable("menu.megarandomoptions"));
 
         this.lastScreen = lastScreen;
         this.level = level;
         this.showMegaRandomOptions = showMegaRandomOptions;
-        this.seed = seed;
     }
 
 
@@ -98,14 +95,7 @@ public class MegaRandomOptionsScreen extends Screen {
                         getBlocksComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_DOBLOCKRANDOMDROPS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -115,15 +105,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getEntityComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_DOENTITYRANDOMDROPS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -133,15 +116,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getPlayerComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_DOPLAYERRANDOMDROPS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -151,15 +127,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getCreativeComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_EXCLUDECREATIVEITEMS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -169,15 +138,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getSpawnEggsComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_EXCLUDESPAWNEGGS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -187,15 +149,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getHeadsComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_EXCLUDEHEADS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -205,15 +160,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getVolatileDropsComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_DO_VOLATILE_DROPS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -223,15 +171,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getRandomSpawnsComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
                                     !level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    MegaGameRules.RULE_DO_RANDOM_SPAWNS.getId()
                             ));
                         }
                 ).width(204).build(), 2
@@ -241,15 +182,8 @@ public class MegaRandomOptionsScreen extends Screen {
                 Button.builder(
                         getExcludeBossesComponent(), (button) -> {
                             MegaMessages.sendToServer(new SetGameRulesC2SPacket(
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOBLOCKRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOENTITYRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DOPLAYERRANDOMDROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDECREATIVEITEMS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDESPAWNEGGS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDEHEADS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                                    level.getGameRules().getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                                    !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                                    !level.getGameRules().getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES),
+                                    MegaGameRules.RULE_EXCLUDE_BOSSES.getId()
                             ));
                         }
                 ).width(204).build(), 2

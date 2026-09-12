@@ -7,6 +7,9 @@ import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MegaGameRules {
 
     public static GameRules.Key<GameRules.BooleanValue> RULE_DOBLOCKRANDOMDROPS;
@@ -19,6 +22,7 @@ public class MegaGameRules {
     public static GameRules.Key<GameRules.BooleanValue> RULE_DO_RANDOM_SPAWNS;
     public static GameRules.Key<GameRules.BooleanValue> RULE_EXCLUDE_BOSSES;
 
+    private static final Map<String, GameRules.Key<GameRules.BooleanValue>> megaRules = new HashMap<>();
 
     public static void register() {
 
@@ -87,13 +91,17 @@ public class MegaGameRules {
 
     }
 
+    public static GameRules.Key<GameRules.BooleanValue> getMegaGameRuleById(String ruleId) {
+        return megaRules.get(ruleId);
+    }
+
     private static GameRules.Key<GameRules.BooleanValue> registerMegaRule(
             String name,
             GameRules.Category category,
             boolean defaultValue,
             MegaGameRuleType megaGameRuleType) {
 
-        return GameRules.register(
+        GameRules.Key<GameRules.BooleanValue> megaRule = GameRules.register(
                 name,
                 category,
                 GameRules.BooleanValue.create(
@@ -102,6 +110,9 @@ public class MegaGameRules {
                         })
                 )
         );
+
+        megaRules.put(megaRule.getId(), megaRule);
+        return megaRule;
     }
 
     private static void onMegaRuleChanged(

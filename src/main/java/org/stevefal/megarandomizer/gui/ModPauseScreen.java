@@ -2,7 +2,6 @@ package org.stevefal.megarandomizer.gui;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.StringWidget;
-import net.minecraft.client.gui.layouts.GridLayout;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
 import org.stevefal.megarandomizer.networking.MegaMessages;
@@ -16,15 +15,11 @@ public class ModPauseScreen extends PauseScreen {
     private static final Component MEGA_RANDOMIZER_MENU = Component.translatable("menu.megarandomoptions");
     private final boolean showPauseMenu;
     private final boolean isSinglePlayer;
-    private final long seed;
 
-    private GridLayout modGridLayout;
-
-    public ModPauseScreen(boolean pShowPauseMenu, boolean isSinglePlayer, long seed) {
+    public ModPauseScreen(boolean pShowPauseMenu, boolean isSinglePlayer) {
         super(pShowPauseMenu);
         this.showPauseMenu = pShowPauseMenu;
         this.isSinglePlayer = isSinglePlayer;
-        this.seed = seed;
     }
 
     @Override
@@ -57,7 +52,7 @@ public class ModPauseScreen extends PauseScreen {
             Button megaRandomButton = Button.builder(
                     MEGA_RANDOMIZER_MENU, (button) -> {
                         MegaMessages.sendToServer(new RequestGameRulesSyncC2SPacket());
-                        minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true, seed));
+                        minecraft.setScreen(new MegaRandomOptionsScreen(this, this.minecraft.level, true));
                     }
             ).width(BUTTON_WIDTH_FULL).build();
 
