@@ -14,7 +14,7 @@ import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
-import org.stevefal.megarandomizer.networking.packets.SetGameRulesC2SPacket;
+import org.stevefal.megarandomizer.networking.packets.toserver.SetGameRulesC2SPacket;
 
 @OnlyIn(Dist.CLIENT)
 public class MegaRandomOptionsScreen extends Screen {

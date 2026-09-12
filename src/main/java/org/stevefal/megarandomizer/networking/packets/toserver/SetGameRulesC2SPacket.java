@@ -1,4 +1,4 @@
-package org.stevefal.megarandomizer.networking.packets;
+package org.stevefal.megarandomizer.networking.packets.toserver;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.networking.MegaMessages;
+import org.stevefal.megarandomizer.networking.packets.toclient.GameRulesSyncS2CPacket;
 
 
 public class SetGameRulesC2SPacket {

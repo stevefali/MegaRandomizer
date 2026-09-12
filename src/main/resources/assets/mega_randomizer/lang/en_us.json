@@ -19,6 +19,16 @@
   "menu.megarandomoptions.exclude_bosses_on": "Exclude Boss Randomization: ON",
   "menu.megarandomoptions.exclude_bosses_off": "Exclude Boss Randomization: OFF",
 
+  "menu.megatracker": "Mega Randomizer Tracker",
+  "menu.megatracker.vanilla_drop": "Vanilla Drop",
+  "menu.megatracker.vanilla_mob": "Vanilla Mob",
+  "menu.megatracker.randomized_drop": "Randomized Drop",
+  "menu.megatracker.randomized_mob": "Randomized Mob",
+  "menu.megatracker.show_mobs": "Show Mobs",
+  "menu.megatracker.show_drops": "Show Drops",
+  "menu.megatracker.volatile_warning": "Warning: 'doVolatileDrops' is True",
+  "menu.megatracker.loading": "Loading...",
+
   "gamerule.doBlockRandomDrops": "Randomize drops from blocks",
   "gamerule.doEntityRandomDrops": "Randomize drops from mobs",
   "gamerule.doPlayerRandomDrops": "Randomize drops from players",

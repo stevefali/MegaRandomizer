@@ -1,4 +1,4 @@
-package org.stevefal.megarandomizer.networking.packets;
+package org.stevefal.megarandomizer.networking.packets.toclient;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
