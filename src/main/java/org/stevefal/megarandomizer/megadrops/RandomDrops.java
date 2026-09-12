@@ -88,7 +88,8 @@ public class RandomDrops {
             Items.COMMAND_BLOCK_MINECART,
             Items.BARRIER,
             Items.LIGHT,
-            Items.DEBUG_STICK
+            Items.DEBUG_STICK,
+            Items.CREAKING_SPAWN_EGG
     };
 
     public static final Item[] excludeCreativeItems = {

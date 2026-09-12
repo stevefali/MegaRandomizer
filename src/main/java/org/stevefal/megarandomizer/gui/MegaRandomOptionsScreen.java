@@ -12,8 +12,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.stevefal.megarandomizer.gamerules.ClientSideRulesHolder;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
-import org.stevefal.megarandomizer.megadrops.RandomDrops;
-import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 import org.stevefal.megarandomizer.networking.packets.toserver.SetGameRulesC2SPacket;
 

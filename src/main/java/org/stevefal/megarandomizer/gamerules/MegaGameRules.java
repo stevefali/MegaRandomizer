@@ -25,23 +25,6 @@ public class MegaGameRules {
     private static final Map<String, GameRules.Key<GameRules.BooleanValue>> megaRules = new HashMap<>();
 
     public static void register() {
-//        RULE_DO_BLOCK_RANDOMDROPS = GameRules.register("doBlockRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
-//
-//        RULE_DO_ENTITY_RANDOMDROPS = GameRules.register("doEntityRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
-//
-//        RULE_DO_PLAYER_RANDOMDROPS = GameRules.register("doPlayerRandomDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
-//
-//        RULE_EXCLUDE_CREATIVEITEMS = GameRules.register("excludeCreativeItems", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
-//
-//        RULE_EXCLUDE_SPAWNEGGS = GameRules.register("excludeSpawnEggs", GameRules.Category.DROPS, GameRules.BooleanValue.create(true));
-//
-//        RULE_EXCLUDE_HEADS = GameRules.register("excludeHeads", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
-//
-//        RULE_DO_VOLATILE_DROPS = GameRules.register("doVolatileDrops", GameRules.Category.DROPS, GameRules.BooleanValue.create(false));
-//
-//        RULE_DO_RANDOM_SPAWNS = GameRules.register("doRandomSpawns", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
-//
-//        RULE_EXCLUDE_BOSSES = GameRules.register("excludeBosses", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
         RULE_DO_BLOCK_RANDOMDROPS = registerMegaRule(
                 "doBlockRandomDrops",

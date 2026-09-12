@@ -4,11 +4,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.stevefal.megarandomizer.MegaRandomizer;
+import org.stevefal.megarandomizer.gui.MegaTrackerScreen;
 import org.stevefal.megarandomizer.gui.ModPauseScreen;
+import org.stevefal.megarandomizer.networking.MegaMessages;
+import org.stevefal.megarandomizer.networking.packets.toserver.RequestTrackerDataSyncC2SPacket;
+import org.stevefal.megarandomizer.util.MegaKeyBinding;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvents {
@@ -26,6 +31,18 @@ public class ClientEvents {
                 minecraft.setScreen(new ModPauseScreen(true, isSinglePlayer));
             }
         }
+
+        @SubscribeEvent
+        public static void onKeyInput(InputEvent.Key event) {
+            if (MegaKeyBinding.TRACKER_KEY.consumeClick()) {
+                MegaMessages.sendToServer(new RequestTrackerDataSyncC2SPacket());
+                Minecraft minecraft = Minecraft.getInstance();
+                if (minecraft.screen == null) {
+                    minecraft.setScreen(new MegaTrackerScreen());
+                }
+            }
+        }
+
     }
 
 

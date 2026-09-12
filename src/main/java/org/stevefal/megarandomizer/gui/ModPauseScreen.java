@@ -1,10 +1,12 @@
 package org.stevefal.megarandomizer.gui;
 
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
 import org.stevefal.megarandomizer.networking.MegaMessages;
 import org.stevefal.megarandomizer.networking.packets.toserver.RequestGameRulesSyncC2SPacket;
+import org.stevefal.megarandomizer.networking.packets.toserver.RequestTrackerDataSyncC2SPacket;
 
 
 public class ModPauseScreen extends PauseScreen {
@@ -35,6 +37,14 @@ public class ModPauseScreen extends PauseScreen {
                 if (renderable instanceof Button) {
                     if (((Button) renderable).getMessage().equals(Component.translatable("menu.returnToMenu"))) {
                         ((Button) renderable).setY(this.height / 4 + 144 + 3);
+                    } else {
+                        ((Button) renderable).setY(((Button) renderable).getY() - 24);
+                    }
+                } else {
+                    if (renderable instanceof StringWidget title) {
+                        if (title.getMessage().equals(this.title)) {
+                            title.setY(title.getY() - 24);
+                        }
                     }
                 }
             });
@@ -47,7 +57,17 @@ public class ModPauseScreen extends PauseScreen {
             ).width(BUTTON_WIDTH_FULL).build();
 
             this.addRenderableWidget(megaRandomButton);
-            megaRandomButton.setPosition(this.width / 2 - 102, this.height / 4 + 120 + 3);
+            megaRandomButton.setPosition(this.width / 2 - 102, this.height / 4 + 96 + 3);
+
+            Button megaTrackerButton = Button.builder(
+                    Component.translatable("menu.megatracker"), (button) -> {
+                        MegaMessages.sendToServer(new RequestTrackerDataSyncC2SPacket());
+                        minecraft.setScreen(new MegaTrackerScreen());
+                    }
+            ).width(BUTTON_WIDTH_FULL).build();
+
+            this.addRenderableWidget(megaTrackerButton);
+            megaTrackerButton.setPosition(this.width / 2 - 102, this.height / 4 + 120 + 3);
         }
     }
 }
