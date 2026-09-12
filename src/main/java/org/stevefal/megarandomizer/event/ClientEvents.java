@@ -27,14 +27,6 @@ public class ClientEvents {
             final Minecraft minecraft = Minecraft.getInstance();
             boolean isSinglePlayer = minecraft.isSingleplayer();
             if (event.getScreen() instanceof PauseScreen && !(event.getScreen() instanceof ModPauseScreen)) {
-                long seed = 0;
-                if (minecraft.hasSingleplayerServer() && minecraft.getSingleplayerServer() != null) {
-                    seed = minecraft.getSingleplayerServer().getWorldData().worldGenOptions().seed();
-                } else if (minecraft.level != null && minecraft.level.getServer() != null) {
-                    seed = minecraft.level.getServer().getWorldData().worldGenOptions().seed();
-                } else if (minecraft.player != null && minecraft.player.clientLevel.getServer() != null) {
-                    seed = minecraft.player.clientLevel.getServer().getWorldData().worldGenOptions().seed();
-                }
                 minecraft.setScreen(new ModPauseScreen(true, isSinglePlayer));
             }
         }
