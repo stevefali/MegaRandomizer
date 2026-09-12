@@ -35,7 +35,7 @@ public class ClientEvents {
                 } else if (minecraft.player != null && minecraft.player.clientLevel.getServer() != null) {
                     seed = minecraft.player.clientLevel.getServer().getWorldData().worldGenOptions().seed();
                 }
-                minecraft.setScreen(new ModPauseScreen(true, isSinglePlayer, seed));
+                minecraft.setScreen(new ModPauseScreen(true, isSinglePlayer));
             }
         }
 
