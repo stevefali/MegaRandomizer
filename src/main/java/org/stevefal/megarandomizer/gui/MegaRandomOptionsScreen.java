@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.stevefal.megarandomizer.gamerules.ClientSideRulesHolder;
+import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
@@ -22,7 +23,8 @@ public class MegaRandomOptionsScreen extends Screen {
     private final int U_OFFSET = 182;
     private final int V_OFFSET = 24;
 
-    private static final ResourceLocation MEGA_WIDGET_LOCATION = ResourceLocation.withDefaultNamespace("textures/gui/widgets.png");
+    private static final ResourceLocation MEGA_WIDGET_LOCATION = ResourceLocation.withDefaultNamespace(
+            "textures/gui/widgets.png");
 
     private final Screen lastScreen;
 
@@ -39,7 +41,6 @@ public class MegaRandomOptionsScreen extends Screen {
 
 
     private final boolean showMegaRandomOptions;
-    private final long seed;
 
     private static final Component ENTITY_DROPS_ON = Component.translatable("menu.megarandomoptions.entity_drops_on");
     private static final Component ENTITY_DROPS_OFF = Component.translatable("menu.megarandomoptions.entity_drops_off");
@@ -47,29 +48,34 @@ public class MegaRandomOptionsScreen extends Screen {
     private static final Component BLOCK_DROPS_OFF = Component.translatable("menu.megarandomoptions.block_drops_off");
     private static final Component PLAYER_DROPS_ON = Component.translatable("menu.megarandomoptions.player_drops_on");
     private static final Component PLAYER_DROPS_OFF = Component.translatable("menu.megarandomoptions.player_drops_off");
-    private static final Component EXCLUDE_CREATIVE_ON = Component.translatable("menu.megarandomoptions.exclude_creative_on");
-    private static final Component EXCLUDE_CREATIVE_OFF = Component.translatable("menu.megarandomoptions.exclude_creative_off");
-    private static final Component EXCLUDE_SPAWNEGGS_ON = Component.translatable("menu.megarandomoptions.exclude_spawneggs_on");
-    private static final Component EXCLUDE_SPAWNEGGS_OFF = Component.translatable("menu.megarandomoptions.exclude_spawneggs_off");
+    private static final Component EXCLUDE_CREATIVE_ON = Component.translatable(
+            "menu.megarandomoptions.exclude_creative_on");
+    private static final Component EXCLUDE_CREATIVE_OFF = Component.translatable(
+            "menu.megarandomoptions.exclude_creative_off");
+    private static final Component EXCLUDE_SPAWNEGGS_ON = Component.translatable(
+            "menu.megarandomoptions.exclude_spawneggs_on");
+    private static final Component EXCLUDE_SPAWNEGGS_OFF = Component.translatable(
+            "menu.megarandomoptions.exclude_spawneggs_off");
     private static final Component EXCLUDE_HEADS_ON = Component.translatable("menu.megarandomoptions.exclude_heads_on");
     private static final Component EXCLUDE_HEADS_OFF = Component.translatable("menu.megarandomoptions.exclude_heads_off");
     private static final Component VOLATILE_DROPS_ON = Component.translatable("menu.megarandomoptions.volatile_drops_on");
-    private static final Component VOLATILE_DROPS_OFF = Component.translatable("menu.megarandomoptions.volatile_drops_off");
+    private static final Component VOLATILE_DROPS_OFF = Component.translatable(
+            "menu.megarandomoptions.volatile_drops_off");
     private static final Component RANDOM_SPAWNS_ON = Component.translatable("menu.megarandomoptions.random_spawns_on");
     private static final Component RANDOM_SPAWNS_OFF = Component.translatable("menu.megarandomoptions.random_spawns_off");
     private static final Component EXCLUDE_BOSSES_ON = Component.translatable("menu.megarandomoptions.exclude_bosses_on");
-    private static final Component EXCLUDE_BOSSES_OFF = Component.translatable("menu.megarandomoptions.exclude_bosses_off");
+    private static final Component EXCLUDE_BOSSES_OFF = Component.translatable(
+            "menu.megarandomoptions.exclude_bosses_off");
 
 
     private static final Component DONE = Component.literal("Done");
 
 
-    public MegaRandomOptionsScreen(Screen lastScreen, boolean showMegaRandomOptions, long seed) {
+    public MegaRandomOptionsScreen(Screen lastScreen, boolean showMegaRandomOptions) {
         super(Component.translatable("menu.megarandomoptions"));
 
         this.lastScreen = lastScreen;
         this.showMegaRandomOptions = showMegaRandomOptions;
-        this.seed = seed;
     }
 
 
@@ -86,133 +92,115 @@ public class MegaRandomOptionsScreen extends Screen {
         GridLayout.RowHelper gridlayout$rowhelper = gridlayout.createRowHelper(2);
 
 
-        this.blocksRandomButton = gridlayout$rowhelper.addChild(Button.builder(getBlocksComponent(), (button) -> {
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(!ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.blocksRandomButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getBlocksComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
+                                    MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.entitiesRandomButton = gridlayout$rowhelper.addChild(Button.builder(getEntityComponent(), (button) -> {
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.entitiesRandomButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getEntityComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
+                                    MegaGameRules.RULE_DO_ENTITY_RANDOMDROPS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.playerRandomButton = gridlayout$rowhelper.addChild(Button.builder(getPlayerComponent(), (button) -> {
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.playerRandomButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getPlayerComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
+                                    MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.excludeCreativeButton = gridlayout$rowhelper.addChild(Button.builder(getCreativeComponent(), (button) -> {
-            RandomDrops.shuffleItems(seed,
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS));
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.excludeCreativeButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getCreativeComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
+                                    MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.excludeSpawnEggsButton = gridlayout$rowhelper.addChild(Button.builder(getSpawnEggsComponent(), (button) -> {
-            RandomDrops.shuffleItems(seed,
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS));
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.excludeSpawnEggsButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getSpawnEggsComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
+                                    MegaGameRules.RULE_EXCLUDE_SPAWNEGGS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.excludeHeadsButton = gridlayout$rowhelper.addChild(Button.builder(getHeadsComponent(), (button) -> {
-            RandomDrops.shuffleItems(seed,
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS));
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.excludeHeadsButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getHeadsComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
+                                    MegaGameRules.RULE_EXCLUDE_HEADS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.volatileDropsButton = gridlayout$rowhelper.addChild(Button.builder(getVolatileDropsComponent(), (button) -> {
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.volatileDropsButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getVolatileDropsComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
+                                    MegaGameRules.RULE_DO_VOLATILE_DROPS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
-        this.randomSpawnsButton = gridlayout$rowhelper.addChild(Button.builder(getRandomSpawnsComponent(), (button) -> {
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.randomSpawnsButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getRandomSpawnsComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
+                                    MegaGameRules.RULE_DO_RANDOM_SPAWNS.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
 
-        this.excludeBossesButton = gridlayout$rowhelper.addChild(Button.builder(getExcludeBossesComponent(), (button) -> {
-            RandomSpawns.shuffleEntities(seed, !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES));
-            MegaMessages.sendToServer(new SetGameRulesC2SPacket(ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS),
-                    ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS),
-                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES)));
-        }).width(204).build(), 2);
+        this.excludeBossesButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        getExcludeBossesComponent(), (button) -> {
+                            MegaMessages.sendToServer(new SetGameRulesC2SPacket(
+                                    !ClientSideRulesHolder.getClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES),
+                                    MegaGameRules.RULE_EXCLUDE_BOSSES.getId()
+                            ));
+                        }
+                ).width(204).build(), 2
+        );
 
 
-        this.doneButton = gridlayout$rowhelper.addChild(Button.builder(DONE, (button) -> {
-            button.active = false;
-            this.minecraft.setScreen(this.lastScreen);
-        }).width(204).build(), 2);
+        this.doneButton = gridlayout$rowhelper.addChild(
+                Button.builder(
+                        DONE, (button) -> {
+                            button.active = false;
+                            this.minecraft.setScreen(this.lastScreen);
+                        }
+                ).width(204).build(), 2
+        );
 
         gridlayout.arrangeElements();
         FrameLayout.alignInRectangle(gridlayout, 0, 0, this.width, this.height, 0.5F, 0.25F);
@@ -311,8 +299,14 @@ public class MegaRandomOptionsScreen extends Screen {
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         if (this.showMegaRandomOptions && this.minecraft != null && this.minecraft.getReportingContext().hasDraftReport() && this.doneButton != null) {
-            guiGraphics.blitSprite(RenderType::guiTextured, MEGA_WIDGET_LOCATION, this.doneButton.getX() + this.doneButton.getWidth() - 17,
-                    this.doneButton.getY() + 3, U_OFFSET, V_OFFSET);
+            guiGraphics.blitSprite(
+                    RenderType::guiTextured,
+                    MEGA_WIDGET_LOCATION,
+                    this.doneButton.getX() + this.doneButton.getWidth() - 17,
+                    this.doneButton.getY() + 3,
+                    U_OFFSET,
+                    V_OFFSET
+            );
         }
     }
 

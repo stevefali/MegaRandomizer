@@ -4,6 +4,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.stevefal.megarandomizer.megadata.MegaSavedData;
+import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 
 import java.util.*;
 
@@ -13,6 +15,7 @@ public class RandomDrops {
 
     private static ArrayList<Item> shuffledList;
 
+    private static MegaSavedData megaSavedData;
 
     public static ItemStack getRandomizedItem(ItemStack vanillaItem, boolean isDoVolatileDrops) {
         // First check if the list is null in case it isn't quite ready yet
@@ -30,7 +33,14 @@ public class RandomDrops {
             if (index == -1) {
                 return vanillaItem;
             } else {
-                return shuffledList.get(index).getDefaultInstance();
+                Item randomizedDrop = shuffledList.get(index);
+                if (megaSavedData != null && randomizedDrop != null && !isDoVolatileDrops) {
+                    megaSavedData.setDiscoveredDropIfNew(
+                            vanillaItem.getItem().getName().getString(),
+                            randomizedDrop.getName().getString()
+                    );
+                }
+                return randomizedDrop.getDefaultInstance();
             }
         } else {
             return vanillaItem;
@@ -38,7 +48,14 @@ public class RandomDrops {
     }
 
     // This is called when the items should get shuffled
-    public static void shuffleItems(long gameSeed, boolean doExcludeCreativeItems, boolean doExcludeSpawnEggs, boolean doExcludeHeads) {
+    public static void shuffleItems(
+            long gameSeed,
+            boolean doExcludeCreativeItems,
+            boolean doExcludeSpawnEggs,
+            boolean doExcludeHeads) {
+
+        megaSavedData = MegaSavedDataAccess.getMegaSavedData();
+
         ArrayList<Item> copiedList = new ArrayList<>(ForgeRegistries.ITEMS.getValues());
 
         masterList = new ArrayList<>(copiedList);

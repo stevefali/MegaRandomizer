@@ -3,6 +3,8 @@ package org.stevefal.megarandomizer.megamobs;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.stevefal.megarandomizer.megadata.MegaSavedData;
+import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 
 import java.util.*;
 
@@ -12,6 +14,8 @@ public class RandomSpawns {
     private static ArrayList<EntityType<?>> shuffledEntities;
     private static Map<EntityType<?>, EntityType<?>> entityMap;
 
+    private static MegaSavedData megaSavedData;
+
 
     public static EntityType<?> getRandomizedEntityType(EntityType<?> vanillaEntityType) {
         if (masterEntities != null) {
@@ -20,7 +24,14 @@ public class RandomSpawns {
             if (index == -1) {
                 return vanillaEntityType;
             } else {
-                return shuffledEntities.get(index);
+                EntityType<?> randomizedEntityType = shuffledEntities.get(index);
+                if (megaSavedData != null && randomizedEntityType != null) {
+                    megaSavedData.setDiscoveredSpawnIfNew(
+                            vanillaEntityType.getDescription().getString(),
+                            randomizedEntityType.getDescription().getString()
+                    );
+                }
+                return randomizedEntityType;
             }
         } else {
             return vanillaEntityType;
@@ -28,6 +39,8 @@ public class RandomSpawns {
     }
 
     public static void shuffleEntities(long gameSeed, boolean excludeBosses) {
+        megaSavedData = MegaSavedDataAccess.getMegaSavedData();
+
         ArrayList<EntityType<?>> copiedEntities = new ArrayList<>(ForgeRegistries.ENTITY_TYPES.getValues());
 
         masterEntities = new ArrayList<>(copiedEntities.stream().filter(

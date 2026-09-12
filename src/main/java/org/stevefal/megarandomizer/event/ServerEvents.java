@@ -20,7 +20,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 import org.stevefal.megarandomizer.MegaRandomizer;
-import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
 import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
@@ -47,7 +46,12 @@ public class ServerEvents {
         final boolean excludeSpawnEggs = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS);
         final boolean excludeHeads = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS);
         final boolean excludeBosses = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES);
-        RandomDrops.shuffleItems(worldData.worldGenOptions().seed(), excludeCreativeItems, excludeSpawnEggs, excludeHeads);
+        RandomDrops.shuffleItems(
+                worldData.worldGenOptions().seed(),
+                excludeCreativeItems,
+                excludeSpawnEggs,
+                excludeHeads
+        );
         RandomSpawns.shuffleEntities(worldData.worldGenOptions().seed(), excludeBosses);
     }
 
@@ -59,15 +63,19 @@ public class ServerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         if (player.serverLevel().players().size() < 2) {
             GameRules gameRules = player.getServer().getGameRules();
-            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(gameRules.getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS),
-                    gameRules.getBoolean(MegaGameRules.RULE_DO_ENTITY_RANDOMDROPS),
-                    gameRules.getBoolean(MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS),
-                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS),
-                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS),
-                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS),
-                    gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
-                    gameRules.getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
-                    gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)), player);
+            MegaMessages.sendToPlayer(
+                    new GameRulesSyncS2CPacket(
+                            gameRules.getBoolean(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS),
+                            gameRules.getBoolean(MegaGameRules.RULE_DO_ENTITY_RANDOMDROPS),
+                            gameRules.getBoolean(MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS),
+                            gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS),
+                            gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS),
+                            gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_HEADS),
+                            gameRules.getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS),
+                            gameRules.getBoolean(MegaGameRules.RULE_DO_RANDOM_SPAWNS),
+                            gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_BOSSES)
+                    ), player
+            );
         }
     }
 
@@ -95,18 +103,16 @@ public class ServerEvents {
         ArrayList<ItemEntity> randomizedDrops = new ArrayList<>();
         event.getDrops().forEach(vanillaDrops -> {
             for (int i = 0; i < vanillaDrops.getItem().getCount(); i++) {
-                randomizedDrops.add(new ItemEntity(level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(vanillaDrops.getItem(),
-                        level.getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS))));
+                randomizedDrops.add(new ItemEntity(
+                        level, ent.getX(), ent.getY(), ent.getZ(), RandomDrops.getRandomizedItem(
+                        vanillaDrops.getItem(),
+                        level.getServer().getGameRules().getBoolean(MegaGameRules.RULE_DO_VOLATILE_DROPS)
+                )
+                ));
             }
         });
         event.getDrops().clear();
         event.getDrops().addAll(randomizedDrops);
-    }
-
-    @SubscribeEvent
-    public static void onCommandsRegister(RegisterCommandsEvent event) {
-        new ReshuffleCommand(event.getDispatcher());
-        ConfigCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent
