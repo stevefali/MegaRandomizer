@@ -4,7 +4,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.*;
 import net.minecraft.network.chat.Component;
 import org.stevefal.megarandomizer.networking.MegaMessages;
-import org.stevefal.megarandomizer.networking.packets.RequestGameRulesSyncC2SPacket;
+import org.stevefal.megarandomizer.networking.packets.toserver.RequestGameRulesSyncC2SPacket;
 
 
 public class ModPauseScreen extends PauseScreen {

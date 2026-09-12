@@ -22,11 +22,12 @@ import net.minecraftforge.server.command.ConfigCommand;
 import org.stevefal.megarandomizer.MegaRandomizer;
 import org.stevefal.megarandomizer.commands.ReshuffleCommand;
 import org.stevefal.megarandomizer.gamerules.MegaGameRules;
+import org.stevefal.megarandomizer.megadata.MegaSavedDataAccess;
 import org.stevefal.megarandomizer.megadrops.RandomDrops;
 import org.stevefal.megarandomizer.megamobs.IMegaMob;
 import org.stevefal.megarandomizer.megamobs.RandomSpawns;
 import org.stevefal.megarandomizer.networking.MegaMessages;
-import org.stevefal.megarandomizer.networking.packets.GameRulesSyncS2CPacket;
+import org.stevefal.megarandomizer.networking.packets.toclient.GameRulesSyncS2CPacket;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public class ServerEvents {
      */
     @SubscribeEvent
     public static void onServerReady(ServerStartedEvent event) {
+        MegaSavedDataAccess.initializeMegaSavedData(event.getServer());
+
         final WorldData worldData = event.getServer().getWorldData();
         final GameRules gameRules = worldData.getGameRules();
         final boolean excludeCreativeItems = gameRules.getBoolean(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS);

@@ -1,11 +1,15 @@
-package org.stevefal.megarandomizer.networking.packets;
+package org.stevefal.megarandomizer.networking.packets.toserver;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.network.CustomPayloadEvent;
-import org.stevefal.megarandomizer.gamerules.ClientSideRulesHolder;
+import org.stevefal.megarandomizer.gamerules.MegaGameRules;
+import org.stevefal.megarandomizer.networking.MegaMessages;
+import org.stevefal.megarandomizer.networking.packets.toclient.GameRulesSyncS2CPacket;
 
 
-public class GameRulesSyncS2CPacket {
+public class SetGameRulesC2SPacket {
 
     private final boolean isDoBlockRandomDrops;
     private final boolean isDoEntityRandomDrops;
@@ -17,7 +21,7 @@ public class GameRulesSyncS2CPacket {
     private final boolean isDoRandomSpawns;
     private final boolean isExcludeBosses;
 
-    public GameRulesSyncS2CPacket(
+    public SetGameRulesC2SPacket(
             boolean isDoBlocks,
             boolean isDoEntities,
             boolean isDoPlayer,
@@ -37,10 +41,9 @@ public class GameRulesSyncS2CPacket {
         this.isDoVolatileDrops = isDoVolatileDrops;
         this.isDoRandomSpawns = isDoRandomSpawns;
         this.isExcludeBosses = isExcludeBosses;
-
     }
 
-    public GameRulesSyncS2CPacket(FriendlyByteBuf buf) {
+    public SetGameRulesC2SPacket(FriendlyByteBuf buf) {
         this.isDoBlockRandomDrops = buf.readBoolean();
         this.isDoEntityRandomDrops = buf.readBoolean();
         this.isDoPlayerRandomDrops = buf.readBoolean();
@@ -64,20 +67,36 @@ public class GameRulesSyncS2CPacket {
         buf.writeBoolean(isExcludeBosses);
     }
 
+
     public boolean handle(CustomPayloadEvent.Context context) {
         context.enqueueWork(() -> {
-            // Client side!
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_BLOCK_RANDOMDROPS, isDoBlockRandomDrops);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_ENTITY_RANDOMDROPS, isDoEntityRandomDrops);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_PLAYER_RANDOMDROPS, isDoPlayerRandomDrops);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_CREATIVEITEMS, isExcludeCreativeItems);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_SPAWNEGGS, isExcludeSpawnEggs);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_HEADS, isExcludeHeads);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_VOLATILE_DROPS, isDoVolatileDrops);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_DO_RANDOM_SPAWNS, isDoRandomSpawns);
-            ClientSideRulesHolder.setClientMegaRule(ClientSideRulesHolder.RULE_EXCLUDE_BOSSES, isExcludeBosses);
+            // Server side
+            ServerPlayer player = context.getSender();
+            ServerLevel level = player.serverLevel();
+
+            // Set the rules
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_BLOCK_RANDOMDROPS).set(isDoBlockRandomDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_ENTITY_RANDOMDROPS).set(isDoEntityRandomDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_PLAYER_RANDOMDROPS).set(isDoPlayerRandomDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_CREATIVEITEMS).set(isExcludeCreativeItems, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_SPAWNEGGS).set(isExcludeSpawnEggs, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_HEADS).set(isExcludeHeads, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_VOLATILE_DROPS).set(isDoVolatileDrops, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_DO_RANDOM_SPAWNS).set(isDoRandomSpawns, level.getServer());
+            level.getGameRules().getRule(MegaGameRules.RULE_EXCLUDE_BOSSES).set(isExcludeBosses, level.getServer());
+
+            // Sync the data back to the client
+            MegaMessages.sendToPlayer(new GameRulesSyncS2CPacket(
+                    isDoBlockRandomDrops,
+                    isDoEntityRandomDrops,
+                    isDoPlayerRandomDrops,
+                    isExcludeCreativeItems,
+                    isExcludeSpawnEggs,
+                    isExcludeHeads,
+                    isDoVolatileDrops,
+                    isDoRandomSpawns,
+                    isExcludeBosses), player);
         });
         return true;
     }
-
 }
